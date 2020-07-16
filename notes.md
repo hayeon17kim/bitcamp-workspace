@@ -2,11 +2,19 @@
 
 비트 캠프 자바 과정 강의노트입니다.
 
------
+# day01
+
+> 2020-07-13
 
 
 
-> Day1: 2020-07-13
+## 요약
+
+- 개발 입문자 오리엔테이션
+
+- 애플리케이션 개발 소개
+
+- 애플리케이션 개발 도구 설치
 
 
 
@@ -87,7 +95,7 @@
 
 
 
-### 체크섬 및 해시값 확인 (`checksum`, `hash value`)
+## 체크섬 및 해시값 확인 (`checksum`, `hash value`)
 
 - 프로그램을 다운로드 받아서 설치하기 전에 해당 프로그램이 제대로 설치되어 있는지 확인하는 방법
   - 해당 파일이 변조되어 있지 않은지 확인: 누군가 해킹코드를 심어 넣은 프로그램을 다운받았을 수 있음
@@ -127,14 +135,11 @@ Path      : C:\Users\bitcamp\Downloads\mariadb-10.5.4-winx64.msi
   - 시스템변수: 어떤 사용자를 만들어도 사용 가능
 
 ```powershell
-PS C:\Users\bitcamp> java.exe -version
+> java.exe -version
 openjdk version "11.0.7" 2020-04-14
 OpenJDK Runtime Environment GraalVM CE 20.1.0 (build 11.0.7+10-jvmci-20.1-b02)
 OpenJDK 64-Bit Server VM GraalVM CE 20.1.0 (build 11.0.7+10-jvmci-20.1-b02, mixed mode, sharing)
 
-PS C:\Users\bitcamp> echo $env:JAVA_HOME
-C:\devtools\graalvm-ce-java11-20.1.0\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\bitcamp\AppData\Local\Microsoft\WindowsApps;;C:\Users\bitcamp\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\bitcamp\AppData\Roaming\npm
-PS C:\Users\bitcamp> echo $env:PATH
 
 ```
 
@@ -149,67 +154,14 @@ PS C:\Users\bitcamp> echo $env:PATH
 
 
 
->  Day2: 2020-07-14
+# Day02 
+>  2020-07-14
 
-### Project Overview
+## Project Overview
 
 
 
 ![process](https://user-images.githubusercontent.com/50407047/87386180-dd073180-c5da-11ea-9942-0d4a6e58dc3c.jpg)
-
-### Java Environmnet 설정
-
-[Visual Studio Code 설치]
-
-- 다운로드 후 더블 클릭하여 설치
-
-[JDK 설치]
-
-- graalvm 다운로드 및 압축 해제
-- OS JDK 설치 경로를 등록
-  - OS 환경변수 설정창 열기
-  - JAVA_HOME이라는 이름으로 JDK 설치 경로 등록
-- OS에 JDK 도구 폴더 등록
-  - PATH 라는 환경변수에 java.exe, javac.exe 등이 있는 폴더를 등록해두면 아무 곳(디렉토리)에서나 실행할 수 있다.
-
-[Eclipse IDE(Integrated Development Environmnet) 설치]
-
-- 다운로드 및 설치
-- 이클립스 실행
-- 워크스페이스 설정
-  - 워크스페이스 디렉토리 설정
-  - C:\Users\bitcamp\eclipse-workspace
-- 이클립스 IDE 설정
-    - Window > Preference 메뉴 선택
-    - General > Editers 선택
-        - 탭 크기: 2
-        - 탭 대신 공백 삽입
-        - 한 줄 100칸
-        - 공백 문자를 특수 기호로 표시
-    - General > Workspace 선택
-        - Text file encoding: UTF-8
-    - Java > Installed JREs
-        - graalvm-ce-java11 확인
-    - Java > Code Style > Formatter
-        - eclipse-java-google-style.xml 파일 다운로드
-        - 이 파일을 import 한다.
-
-[scoop **패키지 매니저** 설치]
-
-- scoop.sh 사이트 방문
-- 안내에 따라 설치한다.
-
-[git 형상관리도구 설치]
-- scoop install git 실행
-
-[gradle 빌드도구 설치]
-
-- scoop install gradle 실행
-
-[Tomcat 설치]
-
-- c:\devtools 폴더에 압축을 푼다.
-- PATH 환경변수에 bin 폴더를 추가한다.
 
 
 
@@ -231,7 +183,6 @@ PS C:\Users\bitcamp> echo $env:PATH
 - `.jar` 
 - `.tar` : 백업하기 위해 한 파일로 만든 것 => 풀으면 디렉토리와 파일이 생김
 - `.tar.gz`: tar로 묶은 파일을 압축
-
 
 
 - `gradle build`
@@ -259,17 +210,6 @@ build 과정(gradle은 이걸 순차적으로 실행시켜줄 뿐, 과정에서 
 - test (=> java.exe)
 - upload 
 - ... 
-
-
-
-[Tomcat]
-
-Web Server: Tomcat
-
-- http://localhost:번호
-  - 아이피를 친 것과 같음
-- Tomcat의 내선번호는 8080
-
 
 
 웹서버가 war 파일을 실행할 수 있도록 app을 웹서버에 **배치(Deploy)**한다
@@ -469,10 +409,6 @@ Hello, world?덈뀞?섏꽭??
 
 
 
->  Day2: 2020-07-14
-
-
-
 보통 
 
 - 컴파일 과정을 거쳐서 기계어로 바꿈
@@ -487,6 +423,12 @@ Specification
 - [Java Language and Virtual Machine Specification](https://docs.oracle.com/javase/specs/)
   - 모든 교재는 이 Specification을 기반으로 함
   - Java는 여기에 따라 만듦
+
+
+
+# day03
+
+> 2020-07-16
 
 
 
@@ -618,9 +560,13 @@ PS C:\Users\bitcamp\bitcamp-workspace> javap HelloWorld.class                   
 
 
 
+
+
 ![자바호환언어](https://user-images.githubusercontent.com/50407047/87496263-2e242d80-c68e-11ea-9ece-6a529df90eda.jpg)
 
-- JDK 어딨는지 보는 프로그램 실행할 때 JAVA_HOME을 확인하고 그 경로로 간다.
+
+
+
 
 
 
@@ -630,15 +576,71 @@ PS C:\Users\bitcamp\bitcamp-workspace> javap HelloWorld.class                   
 
 ![로컬저장소](https://user-images.githubusercontent.com/50407047/87510779-24f78880-c6af-11ea-8b88-0ff628952ae3.jpg)
 
-1일 1커밋
-
-- 알고리즘 공부!! 
-
-
-
 프로젝트 폴더 이름 트렌드: "spring-integration" "bitcamp-java-basic"
 
 프로젝트 폴더 자동으로 구성해주는 도구: gradle 
+
+
+
+
+
+
+
+- .
+
+  ```
+  /bitcamp-workspace(작업 폴더) = project 폴더
+      /src
+          /main
+              /java
+              /resource
+              /webapp
+          /test
+          	/java
+          	/resources
+  ```
+
+  
+
+## 소스 파일과 컴파일 결과 파일을 분리하기
+
+![빌드스크립트](https://user-images.githubusercontent.com/50407047/87539569-13c37180-c6d9-11ea-8369-6784de4b7e56.jpg)
+
+- Maven과 **Gradle** 빌드 도구에서 사용하는 자바 표준 디렉토리 구조로 소스를 관리한다.
+- Maven(60%)과 Gradle(19%)이 전 세계 빌드 시장의 80% 정도를 점유하고 있을 정도로 현업에서 많이 사용한다.
+- 개발 도구에 상관 없이 동일한 디렉토리 구조로 프로젝트 산출물을 관리하기 때문에 유지보수에 좋다.
+- 대부분의 자바 오픈 소스 프로젝트들도 이 디렉토리 구조를 따르고 있다.
+
+```
+프로젝트 폴더
+└── src
+    └── main  <-- 자바 애플리테이션 관련 파일을 두는 폴더
+        └── java       <-- 자바 애플리테이션 소스 파일을 두는 폴더
+        └── resources  <-- 애플리케이션을 실행하는 동안 사용할 파일을 두는 폴더
+        └── webapp     <-- 자바 웹 애플리케이션 리소스 파일(HTML, CSS, JavaScript 등)을 두는 폴더
+    └── test  <-- 단위 테스트 소스 파일을 두는 폴더
+        └── java       <-- 단위 테스트 할 때 사용할 파일을 두는 폴더
+        └── resources  <-- 단위 테스트를 실행하는 동안 사용할 파일을 두는 폴더
+└── build  <-- gradle 빌드의 실행 결과를 두는 폴더
+└── bin    <-- 개발 도구에 따라 이 이름의 폴더에 컴파일 결과 파일을 두기도 한다.
+    └── main <-- src/main 의 빌드 결과 파일을 두는 폴더
+    └── test <-- src/test 의 빌드 결과 파일을 두는 폴더
+└── out  <-- 개발 도구에 따라 이 이름의 폴더에 컴파일 결과 파일을 두기도 한다.
+```
+
+- 보통 현업에서는 회사 도메인 이름으로 관리한다.
+
+  >  resources 에 아무것도 없으면 백업이 안 됨
+
+- `build.gradle`: gradle build script 파일: 빌드할 때 gradle이 해야 할 것을 적어둔 파일
+
+
+
+- 이클립스로 만든 자바 프로젝트는 국제 표준이 아님
+
+- 국제 표준 디렉토리 구조로 만들기 위해서는 다음과 같이 구성을 해야 한다
+
+### Gradle
 
 ```powershell
 > gradle init                                                   
@@ -682,80 +684,14 @@ BUILD SUCCESSFUL in 14m 1s
 2 actionable tasks: 2 executed
 ```
 
-
-
-
-
-build script 파일 안에 gradle 도구가 무슨 일을 해야 하는지 정보가 적혀 있음
-
-
-
-소스 패키지
-
-- 보통 회사 도메인 이름으로 관리
-
-- ./gradle : gradle 사용할 때 사용할 도구들
-- resources 에 아무것도 없으면 백업이 안 됨
-- `build.gradle`: gradle build script 파일: 빌드할 때 gradle이 해야 할 것을 적어둔 파일
-
-
-
-- 이클립스로 만든 자바 프로젝트는 국제 표준이 아님
-
-- 국제 표준 디렉토리 구조로 만들기 위해서는 다음과 같이 구성을 해야 한다.
-
-  ```
-  /bitcamp-workspace(작업 폴더) = project 폴더
-      /src
-          /main
-              /java
-              /resource
-              /webapp
-          /test
-          	/java
-          	/resources
-  ```
-
-  ```
-  /작업 폴더
-  	/프로젝트 폴더
-          /src
-              /main
-                  /java
-                  /resource
-                  /webapp
-              /test
-                  /java
-                  /resources
-  	/프로젝트 폴더
-  	...
-  	/프로젝트 폴더
-  	...
-  	
-  ```
-
-클래스 파일이 있지 않은 다른 폴더에서 클래스 파일 실행할 때 사용
-```powershell
-  > java -classpath src/main/java Hello2 
-```
-
-컴파일 할 때는 소스코드가 들어있는 폴더에 컴파일 하는 게 아니라 다른 데에다가
-
-
-
-src/main/java/com/naver/land/web/
-
-src/main/java/도메인명 거꾸로/프로젝트 명
-
-폴더 이름: 도메인을 거꾸로
-
-
+- 1. `type of project`: 어플리케이션을 만들 것이니 `2. application`을 선택해준다.
+  2. `implement language`: Java 프로젝트를 만들 것이니 `3. Java`를 선택해준다.
+  3. `build script DSL`: DSL(Domain Specific Language)는 빌드 스크립트를 쓸 때 사용하는 언어를 말한다. 빌드 스크립트 안에는 gradle 도구가 무슨 일을 해야 하는 지에 대한 정보가 적혀 있다.
+  4. `test framework`: `1. JUnit 4`
 
 
 
 ## 패키지와 클래스
-
-### 패키지와 클래스
 
 - 여러 개발자가 같은 이름의 클래스를 만들 수 있다.
 - 같은 이름의 클래스를 함께 사용할 경우가 있는데, 이런 경우 이름이 같아서 구분하지 못하는 문제가 발생한다.
@@ -792,5 +728,88 @@ src/main/java/도메인명 거꾸로/프로젝트 명
 
 
 
-### 클래스 파일(.class)의 
+### 클래스 파일(.class)의 위치
 
+- 컴파일러가 생성한 .class 파일은 무조건 패키지 이름과 같은 폴더에 있어야 한다.
+- `/bin/main/com/eomcs/basic/Hello3.class`
+- ex) `bin/main/com/eomcs/basic/Hello3.class`
+
+
+
+### 결론!
+
+- 소스 파일도 자신이 소속된 패키지 폴더에 두자!
+- 그래야 소스 파일을 관리하기 쉽다.
+- 패키지는 디렉토리로 표현한다.
+
+
+
+## 패키지 무소속 클래스
+
+특정 패키지에 소속이 되지 않은 클래스
+
+
+
+### 문법
+
+package 키워드를 붙이지 않는다.
+
+
+
+### 소스 파일의 위치
+
+- 소스 파일을 찾고 관리하기 쉽도록 root 소스 폴더에 둔다.
+- `/src/main/java/소스파일`
+- 예) `src/main/java/Hello4.java`
+
+
+
+> 일반 패키지 폴더에 무소속 클래스를 둔다면?
+>
+> - 패키지 소속 클래스든 무소속 클래스든 소스 파일의 위치는 상관 없다.
+> - 예) `/src/main/com/eomcs/basic/Hello4.java`
+> - 보통 소스 파일의 관리가 쉽도록 패키지에 해당하는 디렉토리에 둔다.
+
+
+
+### 클래스 파일(.class)의 위치
+
+- 컴파일러는 패키지 무소속 클래스를 컴파일할 때 소스 파일의 위치에 상관 없이 클래스 파일을 두는 폴더 (`/bin/main`)의 루트 디렉토리에 생성한다.
+- `/bin/main/클래스파일`
+- 예) `/bin/main/Hello4.class`
+
+
+
+# day04
+
+>  2020-07-16
+
+
+
+유저 홈 폴더
+
+- Windows: 개인 컴퓨터라는 인식이 강해서 C:\ 아래에 바로 폴더를 생성하거나 함
+
+  UNIX: 공용 컴퓨터라는 인식=>컴퓨터 안에 많은 유저가 있어 폴더를 만들면 유저홈 아래에 무조건 만듦
+
+```
+유저홈
+
+​	ㄴ git
+
+​		ㄴ eomcs-docs
+```
+
+> 저장소 아래 다른 저장소를 클론하면 큰일 남!!
+
+
+
+
+
+J-Unit 테스트 프로그램 
+
+이걸 도와주는 프로그램이 따로 있음 
+
+
+
+public이 붙으면 공개이기 때문에 파일명과 클래스 이름을 갖게 해야 한다. 혼동을 주지 않기 위해. 자바에서는 이걸 강제하고 그러지 않으면 에러를 뱉는다.
