@@ -1,1 +1,0 @@
-memberSearchIndex = [{"p":"com.eomcs.basic.ex02","c":"Exam0200","l":"Exam0200()","url":"%3Cinit%3E()"},{"p":"com.eomcs.basic.ex02","c":"Exam0200","l":"m()"},{"p":"com.eomcs.basic.ex02","c":"Exam0200","l":"main(String[])","url":"main(java.lang.String[])"}]
