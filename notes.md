@@ -675,7 +675,7 @@ Enter selection (default: JUnit 4) [1..4] 1
 
 Project name (default: bitcamp-java-basic):
 
-Source package (default: bitcamp.java.basic): com.eomcs
+Source package (default: bitcamp.java.basic): com.eomcs.pms
 
 > Task :init
 Get more help with your project: https://docs.gradle.org/6.5.1/userguide/tutorial_java_projects.html
