@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main() {
-    
-    printf("Hello, world");
-    printf("안녕하세요!");
+    int* p = malloc(4);
+    *p = 200;
+    printf("i = %d\n", *p);
     return 0;
 }
