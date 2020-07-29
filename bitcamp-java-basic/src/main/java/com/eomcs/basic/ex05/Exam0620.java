@@ -15,8 +15,8 @@ public class Exam0620 {
     System.out.println(i); // 5
 
     System.out.println(i--);
-    // System.out.println(5);
-    // i = i - 1;
+    // System.out.println(5); //현재 i메모리에 들어 있는 값을 놓기 
+    // i = i - 1;   / i 메모리의 값을 1 감소시키기 
     System.out.println(i);
 
   }

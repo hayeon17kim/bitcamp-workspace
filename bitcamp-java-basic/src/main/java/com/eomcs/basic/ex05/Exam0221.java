@@ -17,5 +17,6 @@ public class Exam0221 {
     float r = f1 * f2 - 0.01f;
     System.out.println(Math.abs(r) <= Float.POSITIVE_INFINITY);
     //System.out.println(Float.POSITIVE_INFINITY);// 내부적으로 출력할 땐 Infinity가 출력되도록 해놓음
+
   }
 }

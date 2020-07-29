@@ -32,6 +32,13 @@ public class Exam0410 {
     System.out.println(i << 1); // 0001011x => 00010110 => 22
     System.out.println(i << 2); // 001011xx => 00101100 => 44
     System.out.println(i << 3); // 01011xxx => 01011000 => 88
+    
+//    String s1 = "abc";
+//    String s2 = "가나다";
+//    String s3 = "a가b";
+//    System.out.println(s1.length());
+//    System.out.println(s2.length());
+//    System.out.println(s3.length());
 
     // 왼쪽 이동
     // - 1비트 이동은 곱하기 2 한 것과 같은 효과를 준다.

@@ -5,7 +5,7 @@ package com.eomcs.basic.ex05;
 public class Exam0421 {
   public static void main(String[] args) {
     // 음수일 경우,
-    //
+    // 빈자리는 1로 채운다.
     int i = 0b11111111_11111111_11111111_10101001; // -87
 
     System.out.println(i);
@@ -28,7 +28,7 @@ public class Exam0421 {
 
     // 음수 값에 대해 오른쪽으로 비트 이동
     // => 2**n으로 나눈 것과 같다.
-    // => 소수점 이하를 반올림 한 결과가 나온다.
+    // => 소수점이 있을 경우 그 수보다 바로 밑 정수 값이 결과이. 
     // => 왼쪽 빈자리가 부호비트로 채워진다.
   }
 }
