@@ -1,0 +1,24 @@
+package com.eomcs.basic.ex06;
+
+//# 흐름 제어문 - switch 문법 II
+public class Exam0241 {
+
+
+  public static void main(String[] args) {
+    int level = 1;
+
+    final int GUEST= 0, MEMBER = 1, ADMIN = 2;
+
+    switch (level) {
+      case GUEST:
+        System.out.println("조회만 가능합니다.");
+        break;
+      case MEMBER:
+        System.out.println("글작성 가능합니다.");
+        break;
+      case ADMIN:
+        System.out.println("다른 회원의 글을 변경, 삭제할 수 있습니다.");
+        break;
+    }
+  }
+}
