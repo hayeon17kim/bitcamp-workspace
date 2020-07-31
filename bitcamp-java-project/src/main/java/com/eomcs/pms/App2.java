@@ -1,85 +1,73 @@
 package com.eomcs.pms;
 
-// ex) Scanner는 java.util에 있는 Scanner라는 것을 먼저 알려주
-import java.util.Scanner;
 import java.sql.Date;
 
-// 1) 낱개의 변수를 사용하여 여러 회원 정보 처리하기 
-// 2) 조건문을 사용하여 입출력 제어하기
-//  - 필요한 만큼만 입력 받고 출력하고 싶다.
-// 3) 배열을 사용하여 여러 개의 값을 다루기
-//  - 배열을 사용하면 간단하게 여러 개의 변수를 선언할 수 있다. 
-// 4) 반복문을 사용하여 여러 개의 값을 다루기
-//  - 반복문을 사용하면 같은 코드를 중복해서 작성할 필요가 없다.
-// 5) 배열 개수를 변수에서 관리하기
-//  - 변수의 값만 바꾸면 배열 개수를 바로 변경할 수 있어 편하다.
-// 6) 상수를 사용하여 초기 값을 변경하지 못하게 막기
-//  - 변수는 중간에 값을 바꿀 수 있기 때문에 값을 바꾸지 말아야 하는 경우
-//    상수로 선언한다.
-public class App2{
+public class App2 {
 
   public static void main(String[] args) {
-    
-    Scanner keyInput = new Scanner(System.in);
+    java.util.Scanner keyInput = new java.util.Scanner(System.in);
 
-    System.out.println("[회원]");
-    
-    final int MAX_LENGTH = 5;
-    int[] no = new int[MAX_LENGTH];
-    String[] name = new String[MAX_LENGTH];
-    String[] email = new String[MAX_LENGTH];
-    String[] password = new String[MAX_LENGTH];
-    String[] photo = new String[MAX_LENGTH];
-    String[] tel = new String[MAX_LENGTH];
-    Date[] now = new Date[MAX_LENGTH];
-    long currentMillis = 0;
+    final int LENGTH = 10;
+
+    // 여러 개의 프로젝트 정보를 입력받기 위해 변수 준비
+    int[] no = new int[LENGTH];
+    String[] title = new String[LENGTH];
+    String[] content = new String[LENGTH];
+    Date[] startDate = new Date[LENGTH];
+    Date[] endDate = new Date[LENGTH];
+    String[] owner = new String[LENGTH];
+    String[] members = new String[LENGTH];
+
+    System.out.println("[프로젝트]");
+
     int count = 0;
-    
-    //MAX_LENGTH = 100;
-    
-    for (int i = 0; i < MAX_LENGTH; i++) {
-      count ++;
-      System.out.print("번호? ");
+
+    for (int i = 0; i < LENGTH; i++) {
+
+      count++;
+
+      System.out.printf("번호? ");
       no[i] = keyInput.nextInt();
-      keyInput.nextLine();     
-      
-      System.out.print("이름? ");
-      name[i] = keyInput.nextLine();
-      
-      System.out.print("이메일? ");
-      email[i] = keyInput.nextLine();
-      
-      System.out.print("암호? ");
-      password[i] = keyInput.nextLine();
-      
-      System.out.print("사진? ");
-      photo[i] = keyInput.nextLine();
-      
-      System.out.print("전화? ");
-      tel[i] = keyInput.nextLine();
-      
-      currentMillis = System.currentTimeMillis();
-      now[i] = new Date(currentMillis);
-      
+      keyInput.nextLine();
+
+      System.out.print("프로젝트명? ");
+      title[i] = keyInput.nextLine();
+
+      System.out.print("내용? ");
+      content[i] = keyInput.nextLine();
+
+      System.out.print("시작일? ");
+      startDate[i] = Date.valueOf(keyInput.nextLine());
+
+      System.out.print("종료일? ");
+      endDate[i] = Date.valueOf(keyInput.nextLine());
+
+      System.out.print("만든이? ");
+      owner[i] = keyInput.nextLine();
+
+      System.out.print("팀원?: ");
+      members[i] = keyInput.nextLine();
+
       System.out.println("");
-      
-      System.out.println("계속 입력하시겠습니까?(y/N) ");
-      
-    
+      System.out.println("계속 입력 하시겠습니까? (y/N)");
       String response = keyInput.nextLine();
-      if (response.equalsIgnoreCase("y") == false) {
-        break;  // 반복문을 멈춰라.
-      }
+
+
+
+      if (!response.equalsIgnoreCase("y"))  //응답이 y가 아니라면 if문을 실행하라.
+        break;
+
+      System.out.println("");
     }
 
     keyInput.close();
-    
-    System.out.println("--------------------------");
-    
-    for (int i = 0; i < count; i++) {
-      System.out.printf("%d, %s, %s, %s, %s\n", 
-          no[i], name[i], email[i], tel[i], now[i].toString());
+    System.out.println("------------------");
+
+    for(int i = 0; i < count; i++) {
+      System.out.printf("%d, %s, %s, %s, %s\n", no[i], title[i], startDate[i], endDate[i], owner[i]);
+
     }
-    
+
+
   }
 }
