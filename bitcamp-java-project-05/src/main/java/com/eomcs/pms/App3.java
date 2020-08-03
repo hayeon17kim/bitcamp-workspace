@@ -6,22 +6,17 @@ import java.util.Scanner;
 public class App3 {
 
   public static void main(String[] args) {
-    
-    class Task {
-      String title;
-      int no;
-      String content;
-      Date completedDate;
-      String state;
-      String owner;
-    
-    }
 
     Scanner keyInput = new Scanner(System.in);
 
     final int LENGTH = 100;
-    
-    Task tasks[] = new Task[LENGTH];
+
+    String title[] = new String[LENGTH];
+    int no[] = new int[LENGTH];
+    String content[] = new String[LENGTH];
+    Date endDate[] = new Date[LENGTH];
+    String state[] = new String[LENGTH];
+    String owner[] = new String[LENGTH];
 
     System.out.println("[작업]");
 
@@ -30,20 +25,19 @@ public class App3 {
     for (int i = 0; i < LENGTH; i++) {
 
       count++;
-      Task t = new Task();
-      
+
       System.out.print("프로젝트? ");
-      t.title = keyInput.nextLine();
+      title[i] = keyInput.nextLine();
 
       System.out.print("번호? ");
-      t.no = keyInput.nextInt();
+      no[i] = keyInput.nextInt();
       keyInput.nextLine();
 
       System.out.print("내용? ");
-      t.content = keyInput.nextLine();
+      content[i] = keyInput.nextLine();
 
       System.out.print("완료일? ");
-      t.completedDate = Date.valueOf(keyInput.nextLine());
+      endDate[i] = Date.valueOf(keyInput.nextLine());
 
       System.out.println("상태? ");
       System.out.println("0: 신규");
@@ -52,22 +46,20 @@ public class App3 {
 
       switch (keyInput.nextInt()) {
         case 0:
-          t.state = "신규";
+          state[i] = "신규";
           break;
         case 1:
-          t.state = "진행중";
+          state[i] = "진행중";
           break;
         case 2:
-          t.state = "완료";
+          state[i] = "완료";
           break;
       }
 
       keyInput.nextLine();
 
       System.out.print("담당자? ");
-      t.owner = keyInput.nextLine();
-      
-      tasks[i] = t;
+      owner[i] = keyInput.nextLine();
 
 
       System.out.println("계속 입력하시겠습니까? (y / N)");
@@ -81,14 +73,7 @@ public class App3 {
     System.out.println("[프로젝트1]");
 
     for(int i = 0; i < count; i++) {
-      Task t = new Task();
-      t = tasks[i];
-      System.out.printf("%d, %s, %s, %s, %s", 
-          t.no, 
-          t.title, 
-          t.completedDate, 
-          t.state, 
-          t.owner);
+      System.out.printf("%d, %s, %s, %s, %s", no[i],title[i], endDate[i], state[i], owner[i]);
     }
 
     keyInput.close();
