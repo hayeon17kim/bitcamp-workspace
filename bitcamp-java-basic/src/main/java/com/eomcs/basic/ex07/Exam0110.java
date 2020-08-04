@@ -31,5 +31,12 @@ public class Exam0110 {
     
     keyScan.close();
     
+    int i = 0;
+
+    // 1부터 10까지 출력하기
+    do
+      System.out.println(++i);
+    while (i < 10);
+    
   }
 }
