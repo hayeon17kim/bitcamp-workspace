@@ -2,6 +2,7 @@ package com.eomcs.oop.ex06.c;
 
 public class A3 extends A {
   int age;
+  String tel = "A3A3A3";
 
   // 상속 받은 메서드가 서브 클래스의 역할에 맞지 않다면 
   // 서브 클래스의 역할에 맞춰서 재정의 하라!

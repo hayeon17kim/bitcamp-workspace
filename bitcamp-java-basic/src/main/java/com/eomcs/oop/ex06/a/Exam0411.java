@@ -10,7 +10,7 @@ public class Exam0411 {
     System.out.printf("cc: %d\n", sedan.cc);
     System.out.println("-------------------------");
   }
-  
+
   public static void main(String[] args) {
     Sedan car1 = new Sedan();
     car1.model = "티코";
@@ -25,8 +25,8 @@ public class Exam0411 {
     // printSedan()의 파라미터는 Sedan 객체의 주소만 받을 수 있다.
     // 그래서 Truck 객체를 전달할 수 없다.
     printSedan(car2); // 컴파일 오류!
-    
-    // Truck 인스턴스에서 model과 cc 값을 꺼내서 출력할 메서드를 
+
+    // Truck 인스턴스에서 model과 cc 값을 꺼내서 출력할 메서드를
     // 따로 만들어야 한다.
 
   }
