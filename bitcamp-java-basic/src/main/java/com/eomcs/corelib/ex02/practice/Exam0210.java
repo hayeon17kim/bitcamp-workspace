@@ -1,5 +1,4 @@
-// Wrapper 클래스 - 종류
-package com.eomcs.corelib.ex02;
+package com.eomcs.corelib.ex02.practice;
 
 public class Exam0210 {
   public static void main(String[] args) {
@@ -26,37 +25,13 @@ public class Exam0210 {
     //    언제든 wrapper 클래스의 인스턴스를 만들면 된다.
 
     // Wrapper 클래스의 인스턴스를 생성할 때는 생성자 대신 클래스 메서드를 사용하라.
-    Byte b2 = Byte.valueOf((byte)100);          
-    Short s2 = Short.valueOf((short)20000);         
-    Integer i2 = Integer.valueOf(3000000);          
-    Long l2 = Long.valueOf(60000000000L);            
-    Float f2 = Float.valueOf(3.14f);                 
-    Double d2 = Double.valueOf(3.14159);            
-    Boolean bool2 = Boolean.valueOf(true);           
-    Character c2 = Character.valueOf((char)0x41);    
+    Byte b2 = Byte.valueOf((byte)100);
+    Short s2 = Short.valueOf((short)20000);
+    Integer i2 = Integer.valueOf(3000000);
+    Long l2 = Long.valueOf(3000000);
+    Float f2 = Float.valueOf(3.14f);
+    Double d2 = Double.valueOf(3.14f);
+    Boolean bool2 = Boolean.valueOf(true);
+    Character c2 = Character.valueOf((char)0x41);
   }
-  void m1(Object value) {
-    System.out.printf("value=%s\n", value);
-  } // 모든 객체를 받을 수 있다.
-  
-  // 만약에 Wrapper 클래스가 없다면 다음과 같이
-  // 정수를 받는 메서드와 부동소수점을 받는 메서드,
-  // 논리값을 받는 메서드를 따로따로 정의해야 한다.
-  // 이런 불편함을 없애기 위해 Wrapper클래스를 만든 것이다.
-  // 즉 primitive type을 객체와 함께 다룰 수 있도록 만든 문법이다.
-  void m2(long value) {
-    System.out.printf("value=%s\n", value);
-  } // byte, short, int, long, char
-  void m3(double value) {
-    System.out.printf("value=%s\n", value);
-  } // float, double
-  void m4(boolean value) {
-    System.out.printf("value=%s\n", value);
-  } // boolean
 }
-
-
-
-
-
-
