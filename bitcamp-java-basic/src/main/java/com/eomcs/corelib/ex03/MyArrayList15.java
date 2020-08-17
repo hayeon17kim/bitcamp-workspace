@@ -24,12 +24,19 @@ package com.eomcs.corelib.ex03;
 // - 개별적으로 관리해야 할 데이터는 인스턴스 변수를 사용해야 한다.
 //13) 캡슐화 적용하여 공개할 멤버와 공개하지 말아야 할 멤버를 구분한다.
 //14) ArrayList 인스턴스를 생성할 때 배열의 초기 크기를 설정할 수 있도록 생성자를 추가한다.
-public class MyArrayList13 {
+//15) ArrayList 인스턴스를 생성할 때 초기 크기를 지정하지 않고 생성할 수 있도록 기본 생성자를 추가한다.
+public class MyArrayList15 {
 
-  private Object[] elementData = new Object[5];
+  private Object[] elementData;
   private int size;
   
+  public MyArrayList15() {
+    elementData = new Object[5];
+  }
   
+  public MyArrayList15(int initialCapacity) {
+    elementData = new Object[initialCapacity];
+  }
 
   public boolean add(Object e) {
     if (size == elementData.length) {

@@ -1,5 +1,6 @@
 // LinkedList 구현과 사용
 package com.eomcs.corelib.ex04;
+import java.util.LinkedList;
 
 public class Exam0110 {
 
@@ -61,23 +62,4 @@ public class Exam0110 {
 //    => 인덱스를 이용항 특정 항목을 찾을 때 리스트의 처음부터 찾아야 하기 때문에 속도가 느리다.
 //    => 삭제할 때 이전 항목과 다음 항목을 바로 연결하면 되기 때문에 속도가 빠르다.
 //    => 입력할 때 현재항목과 다음 항목을 새 항목과 연결하면 되기 때문에 속도가 빠르다.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

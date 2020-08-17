@@ -1,5 +1,7 @@
 package com.eomcs.corelib.ex03;
 
+import java.util.Arrays;
+
 //테스트1 - MyArrayListTest
 //1) 인스턴스/객체 (의 주소)를 담을 레퍼런스 배열을 준비한다.
 //2) 인스턴스를 추가하는 add(Object) 메서드 정의한다.
@@ -24,12 +26,31 @@ package com.eomcs.corelib.ex03;
 // - 개별적으로 관리해야 할 데이터는 인스턴스 변수를 사용해야 한다.
 //13) 캡슐화 적용하여 공개할 멤버와 공개하지 말아야 할 멤버를 구분한다.
 //14) ArrayList 인스턴스를 생성할 때 배열의 초기 크기를 설정할 수 있도록 생성자를 추가한다.
-public class MyArrayList13 {
+//15) ArrayList 인스턴스를 생성할 때 초기 크기를 지정하지 않고 생성할 수 있도록 기본 생성자를 추가한다.
+//16) 배열 크기를 지정할 때 기본 크기보다 큰 값이 되도록 생성자를 변경한다.
+//17) 배열의 기본 크기를 직접 숫자로 지정하지 말고 상수를 사용하여 지정한다.
+//18) 배열의 크기를 늘릴 때 자바에서 제공하는 Arrays를 사용하여 처리한다.
+//19) 배열의 특정 항목을 삭제할 때 배열 복사 기능을 이용하여 처리한다.
+//20) ArrayList에 보관되어 있는 인스턴스 목록을 배열로 리턴하는 toArray() 메서드를 추가한다.
+//21) toArray()에서 배열을 복사할 때 Arrays.copyOf()메서드를 활용해보자.
 
-  private Object[] elementData = new Object[5];
+public class MyArrayList21 {
+
+  private Object[] elementData;
   private int size;
+  private static final int DEFAULT_CAPACITY = 5;
   
+  public MyArrayList21() {
+    elementData = new Object[DEFAULT_CAPACITY];
+  }
   
+  public MyArrayList21(int initialCapacity) {
+    if (initialCapacity < 5) {
+      elementData = new Object[5];
+    } else {
+      elementData = new Object[initialCapacity];
+    }
+  }
 
   public boolean add(Object e) {
     if (size == elementData.length) {
@@ -40,12 +61,16 @@ public class MyArrayList13 {
   }
 
   private void grow() {
-    System.out.println("오호라! 배열을 늘리자.");
+    //System.out.println("오호라! 배열을 늘리자.");
+    int newCapacity = elementData.length + (elementData.length >> 1);
+    elementData = Arrays.copyOf(elementData, newCapacity);
+    /*
     Object[] newArray = new Object[elementData.length + (elementData.length >> 1)];
     for (int i = 0; i < elementData.length; i++) {
       newArray[i] = elementData[i];
     }
-    elementData = newArray;
+    elementData = newArray;    
+    */
   }
 
 
@@ -81,10 +106,19 @@ public class MyArrayList13 {
 
   public Object remove(int index) {
     Object old = elementData[index];
-
+    
+    System.arraycopy(
+        elementData, //복사 대상
+        index + 1,  // 복사할 항목의 시작 인덱스  
+        elementData, // 복사 목적
+        index, // 목적지
+        this.size - (index + 1)); // 복사할 항목의 개수
+    
+    /*
     for (int i = index; i < size - 1; i++) {
       elementData[i] = elementData[i + 1];
     }
+    */
 
     size--;
     elementData[size] = null;
@@ -96,6 +130,19 @@ public class MyArrayList13 {
 
   public int size() {
     return this.size;
+  }
+  
+  public Object[] toArray() {
+    Object[] arr = Arrays.copyOf(elementData, this.size);
+    //System.out.println(elementData == arr);
+    return arr;
+    /*
+    Object[] arr = new Object[this.size];
+    for (int i = 0; i < arr.length; i++) {
+      arr[i] = elementData[i];
+    }
+    return arr;
+    */
   }
 }
 
