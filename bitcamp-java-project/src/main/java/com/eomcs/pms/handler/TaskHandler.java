@@ -1,42 +1,61 @@
 package com.eomcs.pms.handler;
 
-import java.sql.Date;
+import com.eomcs.pms.domain.Task;
+import com.eomcs.util.ArrayList;
 import com.eomcs.util.Prompt;
 
 public class TaskHandler {
-  
-  // 작업 데이터
-  static class Task {
-    int no;
-    String content;
-    Date completedDate;
-    String owner;
-    int status;
-    
-    static final int LENGTH = 100;
-    static Task[] list = new Task[LENGTH];
-    static int size;
+
+  //Task 객체 목록을 저장할 ArrayList 객체를 준비한다.
+  // 제네릭 문법으로 항목의 타입을 지정한다.
+  ArrayList<Task> taskList = new ArrayList<>();
+  MemberHandler memberHandler;
+
+  public TaskHandler(MemberHandler memberHandler) {
+    this.memberHandler = memberHandler;
   }
 
-  public static void add() {
+  public void add() {
     System.out.println("[작업 등록]");
-    Task t = new Task();
-    t.no = Prompt.inputInt("번호? ");
-    t.content = Prompt.inputString("내용? ");
-    t.completedDate = Prompt.inputDate("마감일? ");
-    t.status = Prompt.inputInt("상태?\n0: 신규\n1: 진행중\n2: 완료\n> ");
-    t.owner = Prompt.inputString("담당자? ");
 
-    Task.list[Task.size++] = t;
+    Task task = new Task();
+    task.setNo(Prompt.inputInt("번호? "));
+    task.setContent(Prompt.inputString("내용? "));
+    task.setDeadline(Prompt.inputDate("마감일? "));
+    task.setStatus(Prompt.inputInt("상태?\n0: 신규\n1: 진행중\n2: 완료\n> "));
+
+    while (true) {
+      String name = Prompt.inputString("담당자?(취소: 빈 문자열) ");
+
+      if (name.length() == 0) {
+        System.out.println("작업 등록을 취소합니다.");
+        return;
+      } else if (memberHandler.findByName(name) != null) {
+        task.setOwner(name);
+        break;
+      }
+
+      System.out.println("등록된 회원이 아닙니다.");
+    }
+
+    // 제네릭 문법에 따라 add()를 호출할 때 넘겨줄 수 있는 값은 
+    // Task 또는 그 하위 타입의 인스턴스만 가능하다.
+    // 다른 타입은 불가능하다.
+    taskList.add(task);
   }
-  
-  public static void list() {
+
+  public void list() {
     System.out.println("[작업 목록]");
-    
-    for (int i = 0; i < Task.size; i++) {
-      Task t = Task.list[i];
+
+    // 제네릭 문법에 따라 리턴 타입이 'Task[]' 이기 때문에
+    // 따로 형변환 할 필요가 없다.
+    // 대신 Task[] 배열을 리턴해 달라는 의미로 배열의 타입 정보를 넘긴다.
+    Task[] tasks = new Task[taskList.size()];
+    taskList.toArray(tasks);
+
+    for (Task task : tasks) {
       String stateLabel = null;
-      switch (t.status) {
+      switch (task.getStatus()) {
         case 1:
           stateLabel = "진행중";
           break;
@@ -46,9 +65,12 @@ public class TaskHandler {
         default:
           stateLabel = "신규";
       }
-      // 번호, 작업명, 마감일, 프로젝트, 상태, 담당자
-      System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
-          t.no, t.content, t.completedDate, stateLabel, t.owner);
+      System.out.printf("%d, %s, %s, %s, %s\n",
+          task.getNo(),
+          task.getContent(),
+          task.getDeadline(),
+          stateLabel,
+          task.getOwner());
     }
   }
 }

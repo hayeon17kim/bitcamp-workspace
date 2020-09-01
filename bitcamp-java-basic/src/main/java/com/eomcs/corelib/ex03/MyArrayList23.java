@@ -36,7 +36,6 @@ import java.util.Arrays;
 //21) toArray()에서 배열을 복사할 때 Arrays.copyOf()메서드를 활용해보자.
 //22) 제네릭을 적용한다.
 //23) 파라미터로 받은 값을 채워주는 toArray(E[]) 메서드를 추가한다.
-//24) 항목의 개수보다 작은 크기의 배열을 전달할 때
 public class MyArrayList<E> {
 
   private static final int DEFAULT_CAPACITY = 5;
@@ -151,11 +150,7 @@ public class MyArrayList<E> {
      */
   }
   
-  @SuppressWarnings("unchecked")
   public E[] toArray(E[] arr) {
-    if (arr.length < this.size) {
-      return (E[]) Arrays.copyOf(this.elementData,  this.size, arr.getClass());
-    } 
     System.arraycopy(this.elementData, 0, arr, 0, this.size);
     return arr;
   }
