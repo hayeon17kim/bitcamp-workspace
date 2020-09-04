@@ -44,16 +44,41 @@ public class MyLinkedListTest {
     
     System.out.println("------------");
     print2(list.toArray());
+    
+    System.out.println("*******");
+    print3(list.toArray());
   }
   
   static void print(MyLinkedList list) {
-    for (int i = 0; i < list.size; i++) {
+    for (int i = 0; i < list.size(); i++) {
       System.out.print(list.get(i) + ",");
     }
     System.out.println();
   }
   
   static void print2(Object[] arr) {
+    for (Object obj : arr) {
+      System.out.print(obj + ",");
+    }
+    System.out.println();
+  }
+  
+  static void print3(MyLinkedList<String> list) {
+    // => 복사할 항목의 개수 만큼 배열을 만들어 전달하면
+    //    ArrayList는 새 배열을 만들지 않고 우리가 준 배열에 값을 담아 리턴한다.
+    String[] arr = 
+    
+    // => 복사할 항목의 개수보다 작은 크기의 배열을 주면
+    //    ArrayList는 새 배열을 만들어 값을 복사한 다음 리턴한다.
+    
+    //String[] arr2 = list.toArray(new String[]{});
+ // 즉시 가비지가 된다.
+    
+    String[] arr = new String[2];
+    String[] arr2 = list.toArray(arr);
+    
+    System.out.println(arr == arr2);
+    
     for (Object obj : arr) {
       System.out.print(obj + ",");
     }

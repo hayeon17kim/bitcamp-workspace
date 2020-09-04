@@ -21,8 +21,8 @@ public class MyLinkedList09 {
   Node last;
 
   // 목록 크기를 보관한다.
-  int size;
 
+  
   // 용도?
   // - Node 클래스는 목록에서 각 항목의 값을 보관하는 객체로 역할을 수행한다.
   // 스태틱 클래스?
