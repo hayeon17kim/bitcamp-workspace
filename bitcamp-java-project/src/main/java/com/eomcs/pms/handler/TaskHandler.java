@@ -2,19 +2,24 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Task;
-import com.eomcs.util.AbstractList;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
-
 
 public class TaskHandler {
 
-  AbstractList<Task> taskList = new AbstractList<>();
+  // 목록을 다루는 객체를 지정할 때,
+  // => 특정 클래스(예: AbstractList, LinkedList, ArrayList)를 지정하는 대신에,
+  // => 사용 규칙(예: List)을 지정함으로써
+  //    더 다양한 타입의 객체로 교체할 수 있게 만든다.
+  // => `List` 규칙을 따르는 객체라면 어떤 클래스의 객체든지 사용할 수 있다.
+  //    결국 유지보수를 더 유연하게 하기 위함이다.
+  List<Task> taskList;
   MemberHandler memberHandler;
 
-
-  public TaskHandler(MemberHandler memberHandler, AbstractList<Task> taskList) {
+  public TaskHandler(List<Task> list, MemberHandler memberHandler) {
+    this.taskList = list;
     this.memberHandler = memberHandler;
-    this.taskList = taskList;
   }
 
   public void add() {
@@ -46,8 +51,12 @@ public class TaskHandler {
   public void list() {
     System.out.println("[작업 목록]");
 
-    for (int i = 0; i < taskList.size(); i++) {
-      Task task = taskList.get(i);
+    // 전체 목록을 조회할 때 `Iterator` 객체를 사용한다.
+    // 만약 목록의 일부만 조회하면다면 인덱스를 직접 다루는 이전 방식을 사용해야 한다.
+    Iterator<Task> iterator = taskList.iterator();
+
+    while (iterator.hasNext()) {
+      Task task = iterator.next();
       String stateLabel = null;
       switch (task.getStatus()) {
         case 1:
@@ -59,8 +68,12 @@ public class TaskHandler {
         default:
           stateLabel = "신규";
       }
-      System.out.printf("%d, %s, %s, %s, %s\n", task.getNo(), task.getContent(), task.getDeadline(),
-          stateLabel, task.getOwner());
+      System.out.printf("%d, %s, %s, %s, %s\n",
+          task.getNo(),
+          task.getContent(),
+          task.getDeadline(),
+          stateLabel,
+          task.getOwner());
     }
   }
 
@@ -101,8 +114,10 @@ public class TaskHandler {
       return;
     }
 
-    String content = Prompt.inputString(String.format("내용(%s)? ", task.getContent()));
-    Date deadline = Prompt.inputDate(String.format("마감일(%s)? ", task.getDeadline()));
+    String content = Prompt.inputString(
+        String.format("내용(%s)? ", task.getContent()));
+    Date deadline = Prompt.inputDate(
+        String.format("마감일(%s)? ", task.getDeadline()));
     String stateLabel = null;
     switch (task.getStatus()) {
       case 1:
@@ -114,11 +129,13 @@ public class TaskHandler {
       default:
         stateLabel = "신규";
     }
-    int status = Prompt.inputInt(String.format("상태(%s)?\n0: 신규\n1: 진행중\n2: 완료\n> ", stateLabel));
+    int status = Prompt.inputInt(
+        String.format("상태(%s)?\n0: 신규\n1: 진행중\n2: 완료\n> ", stateLabel));
 
     String owner = null;
     while (true) {
-      String name = Prompt.inputString(String.format("담당자(%s)?(취소: 빈 문자열) ", task.getOwner()));
+      String name = Prompt.inputString(
+          String.format("담당자(%s)?(취소: 빈 문자열) ", task.getOwner()));
 
       if (name.length() == 0) {
         System.out.println("작업 등록을 취소합니다.");

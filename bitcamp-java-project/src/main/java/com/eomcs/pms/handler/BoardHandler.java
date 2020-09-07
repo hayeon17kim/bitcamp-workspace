@@ -2,17 +2,13 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Board;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
-  // 데이터 목록을 다루는 객체를 교체하기 쉽도록 인터페이스 타입으로 필드를 변경한다.
-  List<Board> boardList;
 
-  // 2) 의존 객체 주입 활용
-  // - 의존 객체를 이 클래스에서 직접 생성하지 말고 외부로부터 주입받는다.
-  // - 생성자의 특성을 이용하자.
-  // - 생성자?가 객체가 작업하는 데 필요한 값 또는 의존 객체를 준비하는 메서드.
+  List<Board> boardList;
 
   public BoardHandler(List<Board> list) {
     this.boardList = list;
@@ -37,10 +33,18 @@ public class BoardHandler {
   public void list() {
     System.out.println("[게시물 목록]");
 
-    for (int i = 0; i < boardList.size(); i++) {
-      Board board = boardList.get(i);
-      System.out.printf("%d, %s, %s, %s, %d\n", board.getNo(), board.getTitle(), board.getWriter(),
-          board.getRegisteredDate(), board.getViewCount());
+    // 전체 목록을 조회할 때 `Iterator` 객체를 사용한다.
+    // 만약 목록의 일부만 조회하면다면 인덱스를 직접 다루는 이전 방식을 사용해야 한다.
+    Iterator<Board> iterator = boardList.iterator();
+
+    while (iterator.hasNext()) {
+      Board board = iterator.next();
+      System.out.printf("%d, %s, %s, %s, %d\n",
+          board.getNo(),
+          board.getTitle(),
+          board.getWriter(),
+          board.getRegisteredDate(),
+          board.getViewCount());
     }
   }
 
@@ -73,9 +77,12 @@ public class BoardHandler {
       return;
     }
 
-    String title = Prompt.inputString(String.format("제목(%s)? ", board.getTitle()));
-    String content = Prompt.inputString(String.format("내용(%s)? ", board.getContent()));
-    String writer = Prompt.inputString(String.format("작성자(%s)? ", board.getWriter()));
+    String title = Prompt.inputString(
+        String.format("제목(%s)? ", board.getTitle()));
+    String content = Prompt.inputString(
+        String.format("내용(%s)? ", board.getContent()));
+    String writer = Prompt.inputString(
+        String.format("작성자(%s)? ", board.getWriter()));
 
     String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
     if (!response.equalsIgnoreCase("y")) {

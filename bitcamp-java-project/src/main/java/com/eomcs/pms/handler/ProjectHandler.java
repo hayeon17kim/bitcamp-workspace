@@ -2,17 +2,24 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Project;
-import com.eomcs.util.AbstractList;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
 
-  AbstractList<Project> projectList;
+  // 목록을 다루는 객체를 지정할 때,
+  // => 특정 클래스(예: AbstractList, LinkedList, ArrayList)를 지정하는 대신에,
+  // => 사용 규칙(예: List)을 지정함으로써
+  //    더 다양한 타입의 객체로 교체할 수 있게 만든다.
+  // => `List` 규칙을 따르는 객체라면 어떤 클래스의 객체든지 사용할 수 있다.
+  //    결국 유지보수를 더 유연하게 하기 위함이다.
+  List<Project> projectList;
   MemberHandler memberHandler;
 
-  public ProjectHandler(MemberHandler memberHandler, AbstractList<Project> projectList) {
+  public ProjectHandler(List<Project> list, MemberHandler memberHandler) {
+    this.projectList = list;
     this.memberHandler = memberHandler;
-    this.projectList = projectList;
   }
 
   public void add() {
@@ -62,10 +69,19 @@ public class ProjectHandler {
   public void list() {
     System.out.println("[프로젝트 목록]");
 
-    for (int i = 0; i < projectList.size(); i++) {
-      Project project = projectList.get(i);
-      System.out.printf("%d, %s, %s, %s, %s, [%s]\n", project.getNo(), project.getTitle(),
-          project.getStartDate(), project.getEndDate(), project.getOwner(), project.getMembers());
+    // 전체 목록을 조회할 때 `Iterator` 객체를 사용한다.
+    // 만약 목록의 일부만 조회하면다면 인덱스를 직접 다루는 이전 방식을 사용해야 한다.
+    Iterator<Project> iterator = projectList.iterator();
+
+    while (iterator.hasNext()) {
+      Project project = iterator.next();
+      System.out.printf("%d, %s, %s, %s, %s, [%s]\n",
+          project.getNo(),
+          project.getTitle(),
+          project.getStartDate(),
+          project.getEndDate(),
+          project.getOwner(),
+          project.getMembers());
     }
   }
 
@@ -96,14 +112,19 @@ public class ProjectHandler {
       return;
     }
 
-    String title = Prompt.inputString(String.format("프로젝트명(%s)? ", project.getTitle()));
-    String content = Prompt.inputString(String.format("내용(%s)? ", project.getContent()));
-    Date startDate = Prompt.inputDate(String.format("시작일(%s)? ", project.getStartDate()));
-    Date endDate = Prompt.inputDate(String.format("종료일(%s)? ", project.getEndDate()));
+    String title = Prompt.inputString(
+        String.format("프로젝트명(%s)? ", project.getTitle()));
+    String content = Prompt.inputString(
+        String.format("내용(%s)? ", project.getContent()));
+    Date startDate = Prompt.inputDate(
+        String.format("시작일(%s)? ", project.getStartDate()));
+    Date endDate = Prompt.inputDate(
+        String.format("종료일(%s)? ", project.getEndDate()));
 
     String owner = null;
     while (true) {
-      String name = Prompt.inputString(String.format("만든이(%s)?(취소: 빈 문자열) ", project.getOwner()));
+      String name = Prompt.inputString(
+          String.format("만든이(%s)?(취소: 빈 문자열) ", project.getOwner()));
       if (name.length() == 0) {
         System.out.println("프로젝트 등록을 취소합니다.");
         return;
@@ -116,7 +137,8 @@ public class ProjectHandler {
 
     StringBuilder members = new StringBuilder();
     while (true) {
-      String name = Prompt.inputString(String.format("팀원(%s)?(완료: 빈 문자열) ", project.getMembers()));
+      String name = Prompt.inputString(
+          String.format("팀원(%s)?(완료: 빈 문자열) ", project.getMembers()));
       if (name.length() == 0) {
         break;
       } else if (memberHandler.findByName(name) != null) {

@@ -1,15 +1,22 @@
 package com.eomcs.pms.handler;
 
 import com.eomcs.pms.domain.Member;
-import com.eomcs.util.AbstractList;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class MemberHandler {
 
-  AbstractList<Member> memberList;
+  // 목록을 다루는 객체를 지정할 때,
+  // => 특정 클래스(예: AbstractList, LinkedList, ArrayList)를 지정하는 대신에,
+  // => 사용 규칙(예: List)을 지정함으로써
+  //    더 다양한 타입의 객체로 교체할 수 있게 만든다.
+  // => `List` 규칙을 따르는 객체라면 어떤 클래스의 객체든지 사용할 수 있다.
+  //    결국 유지보수를 더 유연하게 하기 위함이다.
+  List<Member> memberList;
 
-  public MemberHandler(AbstractList<Member> memberList) {
-    this.memberList = memberList;
+  public MemberHandler(List<Member> list) {
+    this.memberList = list;
   }
 
   public void add() {
@@ -30,10 +37,18 @@ public class MemberHandler {
   public void list() {
     System.out.println("[회원 목록]");
 
-    for (int i = 0; i < memberList.size(); i++) {
-      Member member = memberList.get(i);
-      System.out.printf("%d, %s, %s, %s, %s\n", member.getNo(), member.getName(), member.getEmail(),
-          member.getTel(), member.getRegisteredDate());
+    // 전체 목록을 조회할 때 `Iterator` 객체를 사용한다.
+    // 만약 목록의 일부만 조회하면다면 인덱스를 직접 다루는 이전 방식을 사용해야 한다.
+    Iterator<Member> iterator = memberList.iterator();
+
+    while (iterator.hasNext()) {
+      Member member = iterator.next();
+      System.out.printf("%d, %s, %s, %s, %s\n",
+          member.getNo(),
+          member.getName(),
+          member.getEmail(),
+          member.getTel(),
+          member.getRegisteredDate());
     }
   }
 
@@ -74,11 +89,15 @@ public class MemberHandler {
       return;
     }
 
-    String name = Prompt.inputString(String.format("이름(%s)? ", member.getName()));
-    String email = Prompt.inputString(String.format("이메일(%s)? ", member.getEmail()));
+    String name = Prompt.inputString(
+        String.format("이름(%s)? ", member.getName()));
+    String email = Prompt.inputString(
+        String.format("이메일(%s)? ", member.getEmail()));
     String password = Prompt.inputString("암호? ");
-    String photo = Prompt.inputString(String.format("사진(%s)? ", member.getPhoto()));
-    String tel = Prompt.inputString(String.format("전화(%s)? ", member.getTel()));
+    String photo = Prompt.inputString(
+        String.format("사진(%s)? ", member.getPhoto()));
+    String tel = Prompt.inputString(
+        String.format("전화(%s)? ", member.getTel()));
 
     String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
     if (!response.equalsIgnoreCase("y")) {

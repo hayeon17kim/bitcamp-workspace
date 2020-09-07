@@ -2,12 +2,15 @@ package com.eomcs.util;
 
 import java.lang.reflect.Array;
 
+// List 를 상속 받기 때문에 
+// - size 필드는 제거한다.
+// - size() 메서드는 제거한다.
+// - 상속 받은 메서드를 구현한다.
+//
 public class LinkedList<E> extends AbstractList<E> {
 
-  // 값을 찾을 때는 첫 번째 노드부터 따라간다.
   private Node<E> first;
 
-  // 값을 추가할 때는 마지막 노드에 연결한다.
   private Node<E> last;
 
   static class Node<E> {
@@ -21,6 +24,7 @@ public class LinkedList<E> extends AbstractList<E> {
     }
   }
 
+  @Override
   public boolean add(E e) {
     Node<E> node = new Node<>();
     node.value = e;
@@ -37,6 +41,7 @@ public class LinkedList<E> extends AbstractList<E> {
     return true;
   }
 
+  @Override
   public E get(int index) {
     if (index < 0 || index >= this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -49,6 +54,7 @@ public class LinkedList<E> extends AbstractList<E> {
     return cursor.value;
   }
 
+  @Override
   public void add(int index, E element) {
     if (index < 0 || index > this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -77,6 +83,7 @@ public class LinkedList<E> extends AbstractList<E> {
     }
   }
 
+  @Override
   public E remove(int index) {
     if (index < 0 || index >= this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -107,6 +114,7 @@ public class LinkedList<E> extends AbstractList<E> {
     return old.value;
   }
 
+  @Override
   public E set(int index, E element) {
     if (index < 0 || index >= this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -123,6 +131,7 @@ public class LinkedList<E> extends AbstractList<E> {
     return old;
   }
 
+  @Override
   public Object[] toArray() {
     Object[] arr = new Object[this.size];
 
@@ -137,7 +146,7 @@ public class LinkedList<E> extends AbstractList<E> {
     return arr;
   }
 
-
+  @Override
   @SuppressWarnings("unchecked")
   public E[] toArray(E[] arr) {
 
@@ -156,8 +165,8 @@ public class LinkedList<E> extends AbstractList<E> {
 
   // Object.clone()을 오버라이딩 할 때 'deep copy' 이용하여 스택 객체 복사하기
   // => 새 연결 리스트를 만들어 원본에 보관된 값을 복사한다.
-  // => 따라서 복사본의 Node 객체는 원본의 Node 객체와 다르다.
-  // 복사본의 상태 변경에 원본은 영향 받지 않는다.
+  // => 따라서 복사본의 Node 객체는 원본의 Node 객체와 다르다. 
+  //    복사본의 상태 변경에 원본은 영향 받지 않는다.
   //
   @SuppressWarnings("unchecked")
   @Override
@@ -170,5 +179,8 @@ public class LinkedList<E> extends AbstractList<E> {
     return newList;
   }
 }
+
+
+
 
 
