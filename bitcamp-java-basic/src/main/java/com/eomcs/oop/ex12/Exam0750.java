@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public class Exam0750 {
 
-  static Collection prepareNames(Supplier factory, String... names) {
+  static <T> Collection prepareNames(Supplier factory, String... names) {
     Collection list = (Collection) factory.get();
     for (String name : names) {
       list.add(name);
