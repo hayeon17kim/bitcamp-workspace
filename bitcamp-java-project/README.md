@@ -1,209 +1,126 @@
-# 18 - CRUD
+# 30-a. 파일 입출력 API를 활용하여 데이터를 읽고 쓰기 : CSV 파일 포맷
 
-이번 훈련에서는 게시글, 회원, 프로젝트, 작업 정보 각각에 대해 CRUD를 완성해보자.
+이번 훈련에서는 **파일 입출력 API** 를 활용하여 데이터를 파일로 저장하고
+파일에서 데이터를 읽는 것을 연습할 것이다.
 
-**CRUD** 는 데이터의 생성(Create), 조회(Read/Retrieve), 변경(Update), 삭제(Delete)을 가리키는 용어이다.
+지금까지,
+- 사용자가 입력한 데이터를 컬렉션 객체에 저장했다.
+- 즉 RAM에 데이터가 저장되어 있어서 프로그램을 종료하거나 컴퓨터를 끄면 데이터가 지워지는 문제가 있었다.
+
+프로그램을 종료하더라도 데이터가 지워지지 않게 하려면,
+- 외부 저장장치(예: 하드 디스크, SSD 등)에 저장해야 한다.
+- 즉 데이터를 파일로 출력해야 한다.
+
+**파일 입출력 API** 는,
+- 데이터를 파일로 입출력하는 다양한 도구(*클래스*, *인터페이스*)를 제공한다.
+
+
+**FileInputStream / FileOutputStream** 은,
+
+- 바이너리 형식으로 데이터를 읽고 쓸 때 사용하는 도구다.
+- byte stream class이다.
+```csv
+aaa, bbb, ccc (CRLF)
+```
+- 각 필드는 큰 따옴표를 쳐도 되고 안쳐도 된다.
+```csv
+aaa, "bbb", ccc (CRLF)
+```
+- 파일에 저장할 때 마지막 레코드는 줄바꿈 기호가 있을 수도 있고 없을 수도 있다.
+``` csv
+aaa, bbb, ccc (CRLF)
+aaa, bbb, ccc (CRLF)
+aaa, bbb, ccc
+```
+- CSV에 대한 자세한 정의는 [RFC 4180](https://tools.ietf.org/html/rfc4180) 명세에 있다.
+
+
+**레코드(record)** 는
+
+- 컴퓨터 과학에서 한 단위의 정보를 가리키는 용어다.
+  - 예) 학생정보, 성적정보, 도서정보, 주문정보, 결제정보, 고객정보 등
+- 한 개의 이상의 필드(field)로 구성된다.
+  - 예) 학생정보: 이름, 전화번호, 나이, 우편번호, 주소, 이메일, 암호 등
+- 객체지향 프로그래밍에서 레코드는 보통 클래스로 정의한다.
+```java
+class Student { // 학생 정보
+  ...
+}
+```
+- 필드는 클래스의 인스턴스 필드로 정의한다.
+```java
+class Student {
+    String name; // 이름
+    String tel; // 전화번호
+    int age; // 나이
+    String email; // 이메일
+}
+```
 
 ## 훈련 목표
 
-- 관리 시스템에서 데이터 처리의 기본 기능인 CRUD를 연습한다.
-- 자바에서 기본으로 제공하는 java.util.ArrayList를 모방하여 CRUD에서 사용할 메서드를 ArrayList에 추가한다.
-  - 이를 통해 배열을 다루는 방법과 조건문, 반복문, 메서드 등 자바 기본 문법을 다루는 방법을 연습한다.
+- 파일 입출력 API를 활용하여 데이터를 파일로 입출력 하는 방법을 연습한다.
+- 파일 입출력 API에 적용된 `Decorator` 디자인 패턴의 특징과 이점을 이해한다.
+
 
 ## 훈련 내용
 
-- 기존의 ArrayList 에 값을 조회, 삽입, 변경, 삭제하는 기능을 추가한다.  
-- 게시글의 상세 조회, 변경, 삭제 기능을 추가한다.
-- 회원 정보의 상세 조회, 변경, 삭제 기능을 추가한다.
-- 프로젝트 정보의 상세 조회, 변경, 삭제 기능을 추가한다.
-- 작업 정보의 상세 조회, 변경, 삭제 기능을 추가한다.
-  
+- 사용자가 입력한 게시글, 회원, 프로젝트, 작업 데이터를 파일로 저장하고 파일에서 읽는다.
+
+
 ## 실습
 
-### 1단계 - `java.util.ArrayList` 를 모방하여 `ArrayList` 클래스에 메서드를 추가한다. 
 
-데이터의 CRUD 작업에 필요한 기능을 `ArrayList` 클래스에 추가한다.
-단 자바에서 기본으로 제공하는 `java.util.ArrayList` 를 모방하여 메서드를 추가한다.
-이를 통해 자바의 클래스가 어떤 식으로 동작하는지 이해할 수 있다. 
+### 1단계 - 게시글 데이터를 파일에 보관한다.
 
-- 레퍼런스 배열의 이름을 `java.util.ArrayList` 클래스처럼 `list` 에서 `elementData`로 변경한다.
-- `add(E)` 의 메서드 시그너처를 `java.util.ArrayList.add(E)` 와 같게 한다.
-- 배열의 크기를 늘리는 코드를 `grow()` 메서드로 분리한다.
-- 값을 삽입하는 `add(int,E)` 메서드를 추가한다.
-- 값을 조회하는 `get(int)` 메서드를 추가한다.
-- 값을 변경하는 `set(int,E)` 메서드를 추가한다.
-- 값을 삭제하는 `remove(int)` 메서드를 추가한다.
-- 목록에 저장된 항목의 개수를 리턴하는 `size()` 메서드를 추가한다.
-- Object[] 배열을 리턴하는 `toArray()` 메서드를 추가한다.
-- E[] 배열을 리턴하는 기존의 `toArray(Class<E[]))` 메서드를 `java.util.ArrayList` 에서 
-  제공하는 메서드와 시그너처가 같도록 변경한다.
+- App 클래스
+  - 애플리케이션을 실행했을 때 파일에서 게시글 데이터를 읽어오는 `loadBoards()`를 정의한다.
+  - 애플리케이션을 종료할 때 게시글 데이터를 파일에 저장하는 `saveBoards()`를 정의한다.
+  - 게시글 데이터를 저장할 List 객체는 위에서 만든 메서드에서 접근할 수 있도록 스태틱 필드로 전환한다.
 
 #### 작업 파일
 
-- com.eomcs.util.ArrayList 클래스 변경
+- com.eomcs.pms.App 변경
+  - 백업: App01.java
 
+### 2단계 - 회원 데이터를 파일에 보관한다.
 
-### 2단계 - 변경한 `ArrayList` 의 사용법에 따라 XxxHandler 코드를 변경한다.
-
-- `BoardHandler` 의 `list()` 메서드를 변경한다.
-- `MemberHandler` 의 `list()` 메서드를 변경한다.  
-- `ProjectHandler` 의 `list()` 메서드를 변경한다.  
-- `TaskHandler` 의 `list()` 메서드를 변경한다.  
-
-#### 작업 파일
-
-- com.eomcs.pms.handler.BoardHandler 클래스 변경
-- com.eomcs.pms.handler.MemberHandler 클래스 변경
-- com.eomcs.pms.handler.ProjectHandler 클래스 변경
-- com.eomcs.pms.handler.TaskHandler 클래스 변경
-
-### 3단계 - 게시글의 상세 조회 기능을 추가한다.
-
-- `BoardHandler`에 상세 조회 기능을 수행하는 `detail()` 메서드를 추가한다.
-- 호출될 때 마다 조회수 필드의 값을 1 증가시킨다.
-- 목록에서 번호로 게시글을 찾는 `findByNo(int)` 메서드를 추가한다.
-- `App` 클래스에 `/board/detail` 명령을 추가한다.
-
-
-```
-명령> /board/add
-[새 게시글]
-번호? 1
-제목? 제목1
-내용? 내용입니다.
-작성자? 홍길동
-게시글을 등록하였습니다.
-
-명령> /board/list
-[게시글 목록]
-1, 제목1, 홍길동, 2020-01-10, 0
-2, 제목2, 임꺽정, 2020-01-20, 12
-3, 제목3, 유관순, 2020-01-30, 7
-
-명령> /board/detail
-[게시글 상세보기]
-번호? 1
-제목: 제목1
-내용: 내용입니다.
-작성자: 홍길동
-등록일: 2020-01-10
-조회수: 1
-
-명령> /board/detail
-[게시글 상세보기]
-번호? 100
-해당 번호의 게시글이 없습니다.
-```
+- App 클래스
+  - 애플리케이션을 실행했을 때 파일에서 회원 데이터를 읽어오는 `loadMembers()`를 정의한다.
+  - 애플리케이션을 종료할 때 회원 데이터를 파일에 저장하는 `saveMembers()`를 정의한다.
+  - 회원 데이터를 저장할 List 객체는 위에서 만든 메서드에서 접근할 수 있도록 스태틱 필드로 전환한다.
 
 #### 작업 파일
 
-- com.eomcs.pms.handler.BoardHandler 클래스 변경
-- com.eomcs.pms.App 클래스 변경
+- com.eomcs.pms.App 변경
+  - 백업: App02.java
 
 
-### 4단계 - 게시글의 변경 기능을 추가한다.
+### 3단계 - 프로젝트 데이터를 파일에 보관한다.
 
-- `BoardHandler`에 변경 기능을 수행하는 `update()` 메서드를 추가한다.
-- `App` 클래스에 `/board/update` 명령을 추가한다.
-
-
-```
-명령> /board/update
-[게시글 변경]
-번호? 1
-제목(제목1)? 제목변경
-내용(내용입니다.)? 내용변경
-작성자(홍길동)? 홍길순
-정말 변경하시겠습니까?(y/N) y
-게시글을 변경하였습니다.
-
-명령> /board/update
-[게시글 변경]
-번호? 1
-제목(제목1)? 제목변경
-내용(내용입니다.)? 내용변경
-작성자(홍길동)? 홍길순
-정말 변경하시겠습니까?(y/N) n
-게시글 변경을 취소하였습니다.
-
-명령> /board/detail
-[게시글 상세보기]
-번호? 1
-제목: 제목변경
-내용: 내용변경
-작성자: 홍길순
-등록일: 2020-01-10
-조회수: 2
-
-명령> /board/update
-[게시글 변경]
-번호? 100
-해당 번호의 게시글이 없습니다.
-```
+- App 클래스
+  - 애플리케이션을 실행했을 때 파일에서 프로젝트 데이터를 읽어오는 `loadProjects()`를 정의한다.
+  - 애플리케이션을 종료할 때 프로젝트 데이터를 파일에 저장하는 `saveProjects()`를 정의한다.
+  - 프로젝트 데이터를 저장할 List 객체는 위에서 만든 메서드에서 접근할 수 있도록 스태틱 필드로 전환한다.
 
 #### 작업 파일
 
-- com.eomcs.pms.handler.BoardHandler 클래스 변경
-- com.eomcs.pms.App 클래스 변경
-  
-
-### 5단계 - 게시글의 삭제 기능을 추가한다.
-
-- `BoardHandler`에 변경 기능을 수행하는 `delete()` 메서드를 추가한다.
-- 삭제할 게시글의 인덱스를 리턴하는 `indexOf(int)` 메서드를 추가한다.
-- `App` 클래스에 `/board/delete` 명령을 추가한다.
+- com.eomcs.pms.App 변경
+  - 백업: App03.java
 
 
-```
-명령> /board/delete
-[게시글 삭제]
-번호? 1
-정말 삭제하시겠습니까?(y/N) y
-게시글을 삭제하였습니다.
+### 4단계 - 작업 데이터를 파일에 보관한다.
 
-명령> /board/delete
-[게시글 삭제]
-번호? 1
-정말 변경하시겠습니까?(y/N) n
-게시글 삭제를 취소하였습니다.
-
-명령> /board/delete
-[게시글 삭제]
-번호? 100
-해당 번호의 게시글이 없습니다.
-```
+- App 클래스
+  - 애플리케이션을 실행했을 때 파일에서 작업 데이터를 읽어오는 `loadTasks()`를 정의한다.
+  - 애플리케이션을 종료할 때 작업 데이터를 파일에 저장하는 `saveTasks()`를 정의한다.
+  - 작업 데이터를 저장할 List 객체는 위에서 만든 메서드에서 접근할 수 있도록 스태틱 필드로 전환한다.
 
 #### 작업 파일
 
-- com.eomcs.pms.handler.BoardHandler 클래스 변경
-- com.eomcs.pms.App 클래스 변경
+- com.eomcs.pms.App 변경
 
-
-### 6단계 - 버전 12 에서 만든 나머지 게시판은 삭제한다.
-
-- 첫 번째 게시판만 남겨두고 나머지는 제거한다.
-
-#### 작업 파일
-
-- com.eomcs.pms.App 클래스 변경
-
-
-### 7단계 - 게시글 CRUD를 참고하여 회원, 프로젝트, 작업에 대해서도 CRUD를 완성한다.
-
-#### 작업 파일
-
-- com.eomcs.pms.handler.MemberHandler 클래스 변경
-- com.eomcs.pms.handler.ProjectHandler 클래스 변경
-- com.eomcs.pms.handler.TaskHandler 클래스 변경
-- com.eomcs.pms.App 클래스 변경
 
 ## 실습 결과
 
-- src/main/java/com/eomcs/util/ArrayList.java 변경
-- src/main/java/com/eomcs/pms/handler/BoardHandler.java 변경
-- src/main/java/com/eomcs/pms/handler/MemberHandler.java 변경
-- src/main/java/com/eomcs/pms/handler/ProjectHandler.java 변경
-- src/main/java/com/eomcs/pms/handler/TaskHandler.java 변경
-
-
-
+- src/main/java/com/eomcs/pms/App.java 변경

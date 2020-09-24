@@ -1,8 +1,9 @@
 package com.eomcs.pms.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Board {
+public class Board implements Serializable {
   private int no;
   private String title;
   private String content;
@@ -58,25 +59,5 @@ public class Board {
     this.viewCount = viewCount;
   }
 
-  // Board 객체의 데이터를 CSV 문자열로 바꾸는 일을 한다.
-  // => 기존 코드를 가져와서 메서드로 정의한다.
-  public String toCsvString() {
-    return String.format("%d,%s,%s,%s,%s,%d\n", this.getNo(), this.getTitle(), this.getContent(),
-        this.getWriter(), this.getRegisteredDate(), this.getViewCount());
-  }
 
-  // Board 객체를 생성하는 팩토리 메서드의 역할을 한다.
-  // => 기존 코드를 별도의 메서드로 추출한다. (extract method)
-  public static Board valueOfCsv(String csv) {
-    String[] values = csv.split(",");
-
-    Board board = new Board();
-    board.setNo(Integer.parseInt(values[0]));
-    board.setTitle(values[1]);
-    board.setContent(values[2]);
-    board.setWriter(values[3]);
-    board.setRegisteredDate(Date.valueOf(values[4]));
-    board.setViewCount(Integer.parseInt(values[5]));
-    return board;
-  }
 }
