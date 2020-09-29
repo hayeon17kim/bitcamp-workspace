@@ -2,10 +2,13 @@
 package com.eomcs.io.ex06;
 
 import java.io.FileInputStream;
+import java.util.Scanner;
+
 
 public class Exam0110 {
 
   public static void main(String[] args) throws Exception {
+    Scanner sc = new Scanner(System.in);
     FileInputStream in = new FileInputStream("temp/jls11.pdf");
 
     int b;

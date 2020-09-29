@@ -3,6 +3,8 @@ package com.eomcs.io.ex08;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import com.eomcs.io.ex09.BufferedOutputStream;
+import com.eomcs.io.ex09.step1.BufferedInputStream;
 
 public class Exam0220 {
 

@@ -1,4 +1,4 @@
-package com.eomcs.io.ex08;
+package com.eomcs.io.ex09;
 
 import java.io.OutputStream;
 

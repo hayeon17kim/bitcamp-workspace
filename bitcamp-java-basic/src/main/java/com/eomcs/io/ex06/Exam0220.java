@@ -17,7 +17,6 @@ public class Exam0220 {
 
     while ((len = in.read(buf)) != -1)
       out.write(buf, 0, len);
-
     long endTime = System.currentTimeMillis();
 
     System.out.println(endTime - startTime);

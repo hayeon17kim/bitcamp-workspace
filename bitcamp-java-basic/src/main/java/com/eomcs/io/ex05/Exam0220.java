@@ -1,10 +1,10 @@
-// DataInputStream으로 객체 읽기 - 파일이 데이터를 읽어 인스턴스로 만들기 
+// 객체 읽기 - 파일이 데이터를 읽어 인스턴스로 만들기
 package com.eomcs.io.ex05;
 
 public class Exam0220 {
 
   public static void main(String[] args) throws Exception {
-    DataInputStream in = new DataInputStream("temp/test4_2.data");
+    DataInputStream in = new DataInputStream("temp/test4.data");
 
     Member member = null;
 
@@ -24,9 +24,5 @@ public class Exam0220 {
     System.out.printf("%s\n", member);
   }
 }
-
-
-
-
 
 

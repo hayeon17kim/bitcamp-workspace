@@ -2,6 +2,7 @@
 package com.eomcs.io.ex08;
 
 import java.io.FileOutputStream;
+import com.eomcs.io.ex09.DataOutputStream;
 
 public class Exam0110 {
 

@@ -2,6 +2,7 @@
 package com.eomcs.io.ex08;
 
 import java.io.FileInputStream;
+import com.eomcs.io.ex09.step1.DataInputStream;
 
 public class Exam0120 {
 
