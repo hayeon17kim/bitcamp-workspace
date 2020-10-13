@@ -1,9 +1,10 @@
 package com.eomcs.pms.domain;
 
 import java.sql.Date;
-import com.eomcs.util.CsvObject;
 
-public class Project implements CsvObject {
+//Project 클래스는 더이상 CsvObject를 구현할 필요가 없다.
+//
+public class Project {
   private int no;
   private String title;
   private String content;
@@ -15,98 +16,43 @@ public class Project implements CsvObject {
   public int getNo() {
     return no;
   }
-
   public void setNo(int no) {
     this.no = no;
   }
-
   public String getTitle() {
     return title;
   }
-
   public void setTitle(String title) {
     this.title = title;
   }
-
   public String getContent() {
     return content;
   }
-
   public void setContent(String content) {
     this.content = content;
   }
-
   public Date getStartDate() {
     return startDate;
   }
-
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
   }
-
   public Date getEndDate() {
     return endDate;
   }
-
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
-
   public String getOwner() {
     return owner;
   }
-
   public void setOwner(String owner) {
     this.owner = owner;
   }
-
   public String getMembers() {
     return members;
   }
-
   public void setMembers(String members) {
     this.members = members;
   }
-
-  // 객체의 필드 값을 CSV 형식의 문자열로 만들어 리턴한다.
-  @Override
-  public String toCsvString() {
-    // CSV 문자열을 만들 때 줄 바꿈 코드를 붙이지 않는다.
-    // 줄바꿈 코드는 CSV 문자열을 받아서 사용하는 쪽에서 다룰 문제다.
-    return String.format("%d,%s,%s,%s,%s,%s,%s", this.getNo(), this.getTitle(), this.getContent(),
-        this.getStartDate(), this.getEndDate(), this.getOwner(), this.getMembers());
-  }
-
-  // CSV 문자열을 가지고 객체를 생성한다.
-  public static Project valueOfCsv(String csv) {
-    String[] fields = csv.split(",");
-
-    Project project = new Project();
-    project.setNo(Integer.parseInt(fields[0]));
-    project.setTitle(fields[1]);
-    project.setContent(fields[2]);
-    project.setStartDate(Date.valueOf(fields[3]));
-    project.setEndDate(Date.valueOf(fields[4]));
-    project.setOwner(fields[5]);
-    project.setMembers(fields[6]);
-
-    return project;
-  }
-
-  public Project() {
-
-  }
-
-  public Project(String csv) {
-    String[] fields = csv.split(",");
-
-    setNo(Integer.parseInt(fields[0]));
-    setTitle(fields[1]);
-    setContent(fields[2]);
-    setStartDate(Date.valueOf(fields[3]));
-    setEndDate(Date.valueOf(fields[4]));
-    setOwner(fields[5]);
-    setMembers(fields[6]);
-  }
-
 }
