@@ -42,7 +42,7 @@ import com.eomcs.util.Prompt;
 
 public class App {
   
-  Map<String, Object> context;
+  Map<String, Object> context =  new HashMap<>();
   
   List<ApplicationContextListener> listeners = new ArrayList<>();
 
@@ -78,7 +78,6 @@ public class App {
   
   @SuppressWarnings("unchecked")
   private void service() {
-    context = new HashMap<>();
     notifyApplicationContextListenerOnServiceStarted();
     List<Board> boardList = (List<Board>)context.get("boardList");
     List<Member> memberList = (List<Member>)context.get("memberList");
