@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.eomcs.context.ApplicationContextListener;
@@ -21,7 +22,7 @@ public class ServerApp {
   // 인스턴스 메서드가 되면 안된다. handleClient가 static 이기 때문에  static 멤버에만 접근 가능하다.
   static boolean stop = false;
 
-  static Map<String, Object> context;
+  static Map<String, Object> context = new HashMap<>();
 
   List<ApplicationContextListener> listeners = new ArrayList<>();
 
@@ -83,37 +84,30 @@ public class ServerApp {
     try (Socket socket = clientSocket; // try 블록에서 떠날 때 close()가 자동 호출된다.
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream()))  {
-      while (true) {
         String request = in.readLine();
+        if (request.equalsIgnoreCase("stop")) {
+          stop= true; // 서버의 상태를 멈추라는 의미로 true로 설정한다.
+          out.println("서버를 종료하는 중입니다.");
+          out.println();
+          out.flush();
+          return;
+        }
         
         Command command = (Command) context.get(request);
         if (command != null) {
-          command.execute();
+          // 출력 스트림을 파라미터로 넘긴다.
+          command.execute(out, in);
         } else {
-          sendResponse("해당 명령을 처리할 수 없습니다!", out);
+          out.println("해당 명령을 처리할 수 없습니다!");
         }
-        
-        
-        sendResponse(request, out);   
-        if (request.equalsIgnoreCase("quit"))
-          break;
-        else if (request.equalsIgnoreCase("stop")) {
-          stop= true; // 서버의 상태를 멈추라는 의미로 true로 설정한다.
-          break;
-        }
-      }
+        // 응답의 끝을 알리는 빈 문자열을 보낸다.
+        out.println();
+        out.flush();
+
     } catch (Exception e) {
     }
     
     System.out.printf("클라이언트(%s)와의 연결을 끊습니다.\n", address.getHostAddress());
-  }
-
-
-  private static void sendResponse(String message, PrintWriter out) {
-    out.println(message);
-    out.println(); // 응답이 끝났음을 알리는 빈 줄 출력 
-    out.flush();
-
   }
 }
 

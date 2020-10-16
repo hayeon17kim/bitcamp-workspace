@@ -1,16 +1,5 @@
 package com.eomcs.pms.listener;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import com.eomcs.context.ApplicationContextListener;
@@ -23,7 +12,7 @@ import com.eomcs.pms.handler.BoardDeleteCommand;
 import com.eomcs.pms.handler.BoardDetailCommand;
 import com.eomcs.pms.handler.BoardListCommand;
 import com.eomcs.pms.handler.BoardUpdateCommand;
-import com.eomcs.pms.handler.Command;
+import com.eomcs.pms.handler.CalculatorCommand;
 import com.eomcs.pms.handler.HelloCommand;
 import com.eomcs.pms.handler.MemberAddCommand;
 import com.eomcs.pms.handler.MemberDeleteCommand;
@@ -40,7 +29,6 @@ import com.eomcs.pms.handler.TaskDeleteCommand;
 import com.eomcs.pms.handler.TaskDetailCommand;
 import com.eomcs.pms.handler.TaskListCommand;
 import com.eomcs.pms.handler.TaskUpdateCommand;
-import com.google.gson.Gson;
 
 
 // 클라이언트 요청을 처리할 커멘드 객체를 준비한다.
@@ -80,6 +68,7 @@ public class RequestMappingListener implements ApplicationContextListener {
     context.put("/task/delete", new TaskDeleteCommand(taskList));
 
     context.put("/hello", new HelloCommand());
+    context.put("/calc", new CalculatorCommand());
 
   }
 

@@ -15,53 +15,74 @@ import com.eomcs.util.Prompt;
 // => 애플리케이션 아규먼트를 이용하여 서버의 주소를 입력받는다.
 public class ClientApp {
   
-  // 클라이언트가 서버에 stop명령을 보내면 다음 변수를 true로 변경한다.
-  static boolean stop = false;
-  
+  static String host;
+  static int port;
+  static boolean stop;
   public static void main(String[] args) {
     if (args.length != 2) {
       System.out.println("프로그램 사용법:");
       System.out.println("   java -cp ... Client 서버주소 포트번호");
       System.exit(0);
     }
-    try (Socket socket = new Socket(args[0], Integer.parseInt(args[1]));
+    
+    host = args[0];
+    port = Integer.parseInt(args[1]);
+    
+  // 클라이언트가 서버에 stop명령을 보내면 다음 변수를 true로 변경한다.
+  
+
+    while (true) {
+      String input = Prompt.inputString("명령> ");
+      
+      if (input.equalsIgnoreCase("quit"))
+        break;
+      
+      request(input);
+      
+      if (input.equalsIgnoreCase("stop"))
+        break;
+    }
+      
+    System.out.println("안녕!");
+    
+  }
+  
+  private static void request(String message) {
+    try (Socket socket = new Socket(host, port);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream())) {
-      while (true) {
-        String input = Prompt.inputString("명령> ");
-        out.println(input);
-        out.flush();
-        receiveResponse(in);
-        
-        if (input.equalsIgnoreCase("quit")) {
-          break;
-        } /*else if (input.equalsIgnoreCase("stop")) {
-          stop = true;
-          break;
-        }*/
-      }
+      out.println(message);
+      out.flush();
+      receiveResponse(out, in);
+      
     } catch (Exception e) {
       
     }
     
     if (stop) {
-      // 서버를 멈추기 위해 그냥 접속했다가 끊는다.
-      try (Socket socket = new Socket(args[0], Integer.parseInt(args[1]))) {
-        // 아무것도 안한다.
-        // 서버가 stop할 기회를 주기 위함이다.
+      try (Socket socket = new Socket(host, port)) {
+        
       } catch (Exception e) {
-        // 아무것도 안한다.
+        
       }
     }
     
   }
   
-  private static void receiveResponse(BufferedReader in) throws Exception {
+  
+  private static void receiveResponse(PrintWriter out, BufferedReader in) throws Exception {
     while (true) {
       String response = in.readLine();
-      if (response.length() == 0)
-        break;
-      System.out.println(response);
+      if (response.length() == 0) {
+        break;        
+      }
+      else if (response.equals("!{}!")) {
+        //사용자로부터 입력을 받아 서버에 보낸다.
+        out.println(Prompt.inputString(""));
+        out.flush();
+      } else {
+        System.out.println(response);
+      }
     }
   }
 }
