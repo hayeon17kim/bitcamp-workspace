@@ -1,7 +1,5 @@
 package com.eomcs.pms.handler;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.List;
 import com.eomcs.pms.domain.Board;
@@ -17,24 +15,19 @@ public class BoardAddCommand implements Command {
   }
 
   @Override
-  public void execute(PrintWriter out, BufferedReader in) {
-    try {
-      out.println("[게시물 등록]");
-      
-      Board board = new Board();
-      board.setNo(Prompt.inputInt("번호? ", out, in));
-      board.setTitle(Prompt.inputString("제목? ", out, in));
-      board.setContent(Prompt.inputString("내용? ", out, in));
-      board.setWriter(Prompt.inputString("작성자? ", out, in));
-      board.setRegisteredDate(new Date(System.currentTimeMillis()));
-      board.setViewCount(0);
-      
-      boardList.add(board);
-      
-      System.out.println("게시글을 등록하였습니다.");
-      
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
+  public void execute() {
+    System.out.println("[게시물 등록]");
+
+    Board board = new Board();
+    board.setNo(Prompt.inputInt("번호? "));
+    board.setTitle(Prompt.inputString("제목? "));
+    board.setContent(Prompt.inputString("내용? "));
+    board.setWriter(Prompt.inputString("작성자? "));
+    board.setRegisteredDate(new Date(System.currentTimeMillis()));
+    board.setViewCount(0);
+
+    boardList.add(board);
+
+    System.out.println("게시글을 등록하였습니다.");
   }
 }

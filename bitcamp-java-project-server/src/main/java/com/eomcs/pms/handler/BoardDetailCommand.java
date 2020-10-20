@@ -1,7 +1,5 @@
 package com.eomcs.pms.handler;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.util.List;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.util.Prompt;
@@ -15,28 +13,23 @@ public class BoardDetailCommand implements Command {
   }
 
   @Override
-  public void execute(PrintWriter out, BufferedReader in) {
-    try {
-    out.println("[게시물 상세보기]");
-    int no = Prompt.inputInt("번호? ", out, in);
+  public void execute() {
+    System.out.println("[게시물 상세보기]");
+    int no = Prompt.inputInt("번호? ");
     Board board = findByNo(no);
 
     if (board == null) {
-      out.println("해당 번호의 게시글이 없습니다.");
+      System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
 
     board.setViewCount(board.getViewCount() + 1);
 
-    out.printf("제목: %s\n", board.getTitle());
-    out.printf("내용: %s\n", board.getContent());
-    out.printf("작성자: %s\n", board.getWriter());
-    out.printf("등록일: %s\n", board.getRegisteredDate());
-    out.printf("조회수: %d\n", board.getViewCount());
-    } catch (Exception e) {
-      // 반드시 줄바꿈 코드를 넣어야 한다! 우리가 클라이언트에게 한줄씩 명령을 보내야 하기 때문이다.
-      out.printf("작업 처리 중 오류 발생! -s%\n", e.getMessage());
-    }
+    System.out.printf("제목: %s\n", board.getTitle());
+    System.out.printf("내용: %s\n", board.getContent());
+    System.out.printf("작성자: %s\n", board.getWriter());
+    System.out.printf("등록일: %s\n", board.getRegisteredDate());
+    System.out.printf("조회수: %d\n", board.getViewCount());
   }
 
   private Board findByNo(int no) {

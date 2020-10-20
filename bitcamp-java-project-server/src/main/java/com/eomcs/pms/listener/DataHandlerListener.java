@@ -42,7 +42,7 @@ public class DataHandlerListener implements ApplicationContextListener {
     loadData(memberList, memberFile, Member[].class);
     loadData(projectList, projectFile, Project[].class);
     loadData(taskList, taskFile, Task[].class);
-    
+
     // 옵저버가 파일에서 데이터(게시글,회원,프로젝트,작업)를 읽어
     // List 컬렉션에 저장한 다음,
     // 발행자(App 객체)가 사용할 수 있도록 맵 객체에 담아서 공유한다.
