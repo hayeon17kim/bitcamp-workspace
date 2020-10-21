@@ -1,4 +1,5 @@
 package com.eomcs.context;
+<<<<<<< HEAD
 // 애플리케이션의 상태가 변경되었을 때
 // 호출할 메서드 규칙을 정의한다.ㅣ
 // 즉 애플리케이션 상태 변경에 대해 보고를 받을 "Observer" 규칙을 정의한다.
@@ -10,4 +11,13 @@ public interface ApplicationContextListener {
   // 발행자(애플리케이션)가 애플리케이션 종료를 알리기 위해 호출하는 메서드
   void contextDestroyed();
 
+=======
+
+import java.util.Map;
+
+public interface ApplicationContextListener {
+  
+  public void contextInitialized(Map<String, Object> map);
+  public void contextDestroyed(Map<String, Object> map);
+>>>>>>> f3e5e9e107e2b82add7dcd255230e695b2d5f2bb
 }

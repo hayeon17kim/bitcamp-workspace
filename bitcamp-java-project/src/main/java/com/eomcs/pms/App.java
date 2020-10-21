@@ -1,15 +1,7 @@
 package com.eomcs.pms;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,12 +36,21 @@ import com.eomcs.pms.handler.TaskDeleteCommand;
 import com.eomcs.pms.handler.TaskDetailCommand;
 import com.eomcs.pms.handler.TaskListCommand;
 import com.eomcs.pms.handler.TaskUpdateCommand;
+<<<<<<< HEAD
 import com.eomcs.pms.listener.AppInitListener;
+=======
+import com.eomcs.pms.listener.AppInitContextListener;
+import com.eomcs.pms.listener.DataHandlerListener;
+>>>>>>> f3e5e9e107e2b82add7dcd255230e695b2d5f2bb
 import com.eomcs.util.Prompt;
-import com.google.gson.Gson;
 
 public class App {
+  
+  Map<String, Object> context =  new HashMap<>();
+  
+  List<ApplicationContextListener> listeners = new ArrayList<>();
 
+<<<<<<< HEAD
   List<ApplicationContextListener> listeners = new ArrayList<>();
   
   public void addApplicationContextListener(ApplicationContextListener listener) {
@@ -69,10 +70,31 @@ public class App {
   public void notifyApplicationContextListenerOnServiceStopped() {
     for (ApplicationContextListener listener : listeners) {
       listener.contextDestroyed();
+=======
+
+  private void addApplicationContextListener (ApplicationContextListener listener) {
+    listeners.add(listener);
+  }
+  
+  private void removeApplicationContextListener (ApplicationContextListener listener) {
+    listeners.remove(listener);
+  }
+  
+  private void notifyApplicationContextListenerOnServiceStarted() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextInitialized(context);
+    }
+  }
+  
+  private void notifyApplicationContextListenerOnServiceStopped() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextDestroyed(context);
+>>>>>>> f3e5e9e107e2b82add7dcd255230e695b2d5f2bb
     }
   }
   
   
+<<<<<<< HEAD
   public static void main(String[] args) {
     App app = new App();
     app.addApplicationContextListener(new AppInitListener());
@@ -101,6 +123,26 @@ public class App {
     loadObjects(projectList, projectFile, Project[].class);
     loadObjects(taskList, taskFile, Task[].class);
 
+=======
+  
+  public static void main(String[] args) {
+    App app = new App();
+    app.addApplicationContextListener(new AppInitContextListener());
+    app.addApplicationContextListener(new DataHandlerListener());
+    app.service();
+  }
+  
+  @SuppressWarnings("unchecked")
+  private void service() {
+    notifyApplicationContextListenerOnServiceStarted();
+    List<Board> boardList = (List<Board>)context.get("boardList");
+    List<Member> memberList = (List<Member>)context.get("memberList");
+    List<Project> projectList = (List<Project>)context.get("projectList");
+    List<Task> taskList = (List<Task>)context.get("taskList");
+    
+    
+    
+>>>>>>> f3e5e9e107e2b82add7dcd255230e695b2d5f2bb
     Map<String,Command> commandMap = new HashMap<>();
 
     commandMap.put("/board/add", new BoardAddCommand(boardList));
@@ -172,16 +214,23 @@ public class App {
 
     Prompt.close();
 
+<<<<<<< HEAD
     // 데이터를 파일에 저장
     saveObjects(boardList, boardFile);
     saveObjects(memberList, memberFile);
     saveObjects(projectList, projectFile);
     saveObjects(taskList, taskFile);
+=======
+>>>>>>> f3e5e9e107e2b82add7dcd255230e695b2d5f2bb
     
     notifyApplicationContextListenerOnServiceStopped();
   }
 
+<<<<<<< HEAD
   void printCommandHistory(Iterator<String> iterator) {
+=======
+  private void printCommandHistory(Iterator<String> iterator) {
+>>>>>>> f3e5e9e107e2b82add7dcd255230e695b2d5f2bb
     try {
       int count = 0;
       while (iterator.hasNext()) {
@@ -197,6 +246,7 @@ public class App {
     }
   }
 
+<<<<<<< HEAD
   // 이제 더이상 저장할 객체를 CsvObject로 제한할 필요가 없다.
   // 어떤 타입의 객체든지 JSON 형식으로 변환할 수 있기 때문이다.
   private void saveObjects(Collection<?> list, File file) {
@@ -285,4 +335,6 @@ public class App {
       }
     }
   }
+=======
+>>>>>>> f3e5e9e107e2b82add7dcd255230e695b2d5f2bb
 }
