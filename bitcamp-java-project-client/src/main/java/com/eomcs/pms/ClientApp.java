@@ -20,6 +20,8 @@ public class ClientApp {
       System.out.println("  java -cp ... ClientApp 서버주소 포트번호");
       System.exit(0);
     }
+    
+    boolean stop = false;
 
     try (Socket socket = new Socket(args[0], Integer.parseInt(args[1]));
         PrintWriter out = new PrintWriter(socket.getOutputStream());
@@ -30,22 +32,38 @@ public class ClientApp {
         out.println(input);
         out.flush();
 
-        receiveResponse(in);
+        receiveResponse(out, in);
 
-        if (input.equalsIgnoreCase("quit"))
+        if (input.equalsIgnoreCase("quit")) {
+          break;          
+        } else if (input.equalsIgnoreCase("stop")) {
+          stop = true;
           break;
+        }
       }
 
     } catch (Exception e) {
       e.printStackTrace();
     }
+    
+    if (stop) {
+      try (Socket socket = new Socket(args[0], Integer.parseInt(args[1]))) {
+        
+      } catch (Exception e) {}
+    }
   }
 
-  private static void receiveResponse(BufferedReader in) throws Exception {
+  private static void receiveResponse(PrintWriter out, BufferedReader in) throws Exception {
     while (true) {
       String response = in.readLine();
       if (response.length() == 0)
         break;
+      else if (response.equals("!{}!"))  {
+        out.println(Prompt.inputString(""));
+        out.flush();
+      } else {
+        System.out.println(response);
+      }
       System.out.println(response);
     }
   }

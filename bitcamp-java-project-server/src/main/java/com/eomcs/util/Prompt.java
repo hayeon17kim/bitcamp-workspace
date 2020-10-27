@@ -1,5 +1,7 @@
 package com.eomcs.util;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.Scanner;
 
@@ -11,9 +13,33 @@ public class Prompt {
     System.out.print(title);
     return keyboardScan.nextLine();
   }
+  
+  public static String inputString(
+      String title, 
+      PrintWriter out, 
+      BufferedReader in) throws Exception {
+    out.println(title);
+    out.println("!{}!");
+    out.flush();
+    return in.readLine();
+  }
+  
+  public static int inputInt(
+      String title,
+      PrintWriter out,
+      BufferedReader in) throws Exception {
+    return Integer.parseInt(inputString(title, out, in));
+  }
 
   public static int inputInt(String title) {
     return Integer.parseInt(inputString(title));
+  }
+  
+  public static Date inputDate(
+      String title,
+      PrintWriter out,
+      BufferedReader in) throws Exception {
+    return Date.valueOf(inputString(title, out, in));
   }
 
   public static Date inputDate(String title) {

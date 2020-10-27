@@ -11,9 +11,10 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import com.eomcs.context.ApplicationContextListener;
+import com.eomcs.pms.handler.Command;
 import com.eomcs.pms.listener.AppInitListener;
 import com.eomcs.pms.listener.DataHandlerListener;
-import com.eomcs.util.Prompt;
+import com.eomcs.pms.listener.RequestMappingListener;
 
 //Stateful 통신
 //=> 클라이언트가 연결되면 클라이언트가 보낸 메시지를 그대로 리턴해 준다.
@@ -75,6 +76,7 @@ public class ServerApp {
     // 옵저버 등록
     server.addApplicationContextListener(new AppInitListener());
     server.addApplicationContextListener(new DataHandlerListener());
+    server.addApplicationContextListener(new RequestMappingListener());
 
     server.service(8888);
   }
@@ -122,6 +124,17 @@ public class ServerApp {
           out.flush();
           break;
         }
+        
+        //
+        Command command = (Command) context.get(request);
+        if (command != null)
+          command.execute(out, in);
+        else
+          out.println("해당 명령을 처리할 수 없습니다.");
+        
+        out.println();
+        out.flush();
+       
       }
 
     } catch (Exception e) {
