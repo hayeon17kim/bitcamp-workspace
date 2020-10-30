@@ -3,10 +3,12 @@ package com.eomcs.jdbc.ex2;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Exam0210 {
+public class Exam0420 {
   public static void main(String[] args) throws Exception{
     String title = null;
     String contents = null;
@@ -42,7 +44,8 @@ public class Exam0210 {
         
         // 게시글 입력 처리 객체
         PreparedStatement boardStmt = con.prepareStatement(
-            "insert into x_board(title, contents) values(?,?)");
+            "insert into x_board(title, contents) values(?,?)",
+            Statement.RETURN_GENERATED_KEYS);
         // 첨부파일 입력 처리 객체
         PreparedStatement fileStmt = con.prepareStatement(
             "insert into x_board_file(file_path, board_id) values(?, ?)")) {
@@ -50,18 +53,24 @@ public class Exam0210 {
       boardStmt.setString(1,  title);
       boardStmt.setString(2, contents);
       int count = boardStmt.executeUpdate();
-      System.out.printf("%d개 게시글 입력 성공!", count);
+      System.out.printf("%d개 게시글 입력 성공!\n", count);
       
+      // 위에서 입력한 게시글의 PK값을 알아내기
+      ResultSet keysRS = boardStmt.getGeneratedKeys();
+      keysRS.next(); // PK가 들어잇는 레코드를 한 개 가져온다. 
+      int boardId = keysRS.getInt(1); // 레코드에서 컬럼 값을 꺼낸다.
       
       int fileCount = 0;
       // 첨부파일 입력
       for (String filename : files) {
         fileStmt.setString(1, filename);
-        fileStmt.setInt(2, 0);
+        // 위에서 게시글 입력 후에 자동 생성된 PK값을 사용하여
+        // 첨부파일의 데이터ㅡㄹ 입력할 때 설정한다.
+        fileStmt.setInt(2, boardId);
         fileStmt.executeUpdate();
         fileCount++;
       }
-      System.out.printf("%d개 첨부파일 입력 성공!", fileCount);
+      System.out.printf("%d개 첨부파일 입력 성공!\n", fileCount);
       if (count == 0) {
         System.out.println("해당 번호의 게시물이 존재하지 않습니다.");
       } else {

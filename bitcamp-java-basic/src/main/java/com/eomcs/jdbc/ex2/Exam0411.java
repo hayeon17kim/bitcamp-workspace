@@ -3,10 +3,11 @@ package com.eomcs.jdbc.ex2;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Exam0210 {
+public class Exam0411 {
   public static void main(String[] args) throws Exception{
     String title = null;
     String contents = null;
@@ -58,6 +59,13 @@ public class Exam0210 {
       for (String filename : files) {
         fileStmt.setString(1, filename);
         fileStmt.setInt(2, 0);
+        // 첨부파일  테이블에 데이터를 입력하려면,
+        // 게시글 번호를 알아야 한다.
+        // 문제는 바로 위에서 입력한 게시글의 pk가 자동 생성되는 컬럼이기 때문에 
+        // 입력한 후 그 PK 값이 뭔지 알 수가 없다는 것이다.
+        // 그래서 첨부파일 테이블에 데이터를 입력할 수 없다!
+        // 해결책! 데이터를 입력할 때 자동 생성된 PK값을 알 수 있다면 
+        // 이 문제를 해결할 수 있다.
         fileStmt.executeUpdate();
         fileCount++;
       }
