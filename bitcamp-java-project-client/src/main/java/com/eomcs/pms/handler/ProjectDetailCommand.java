@@ -22,28 +22,28 @@ public class ProjectDetailCommand implements Command {
 
       stmt.setInt(1, no);
 
-
       try (ResultSet rs = stmt.executeQuery()) {
-        StringBuilder members = new StringBuilder();
-        try (PreparedStatement stmt2 = con.prepareStatement(
-            "select mp.member_no, m.name"
-                + " from pms_member_project mp"
-                + " inner join pms_member m on mp.member_no=m.no"
-                + " where mp.project_no=" + no);
-            ResultSet memberRs = stmt2.executeQuery()) {
-
-          while (memberRs.next()) {
-            if (members.length() > 0) {
-              members.append(",");
-            }
-            members.append(memberRs.getString("name"));
-          }
-        }
         if (rs.next()) {
+          StringBuilder members = new StringBuilder();
+          try (PreparedStatement stmt2 = con.prepareStatement(
+              "select mp.member_no, m.name"
+                  + " from pms_member_project mp"
+                  + " inner join pms_member m on mp.member_no=m.no"
+                  + " where mp.project_no=" + rs.getInt("no"));
+              ResultSet memberRs = stmt2.executeQuery()) {
+
+            while (memberRs.next()) {
+              if (members.length() > 0) {
+                members.append(",");
+              }
+              members.append(memberRs.getString("name"));
+            }
+          }
+
           System.out.printf("프로젝트명: %s\n", rs.getString("title"));
           System.out.printf("내용: %s\n", rs.getString("content"));
           System.out.printf("기간: %s ~ %s\n", rs.getDate("sdt"), rs.getDate("edt"));
-          System.out.printf("만든이: %s\n", rs.getString("owner_name"));
+          System.out.printf("관리자: %s\n", rs.getString("owner_name"));
           System.out.printf("팀원: %s\n", members.toString());
 
         } else {

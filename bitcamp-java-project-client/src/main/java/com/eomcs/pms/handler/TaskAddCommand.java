@@ -19,110 +19,94 @@ public class TaskAddCommand implements Command {
 
   @Override
   public void execute() {
+
     System.out.println("[작업 등록]");
-
-    // 작업 정보를 입력받을 객체 준비
     Task task = new Task();
-
-    // 프로젝트 목록을 가져온다.     
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111")) {
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");) {
 
-      // 작업을 등록할 프로젝트를 결정한다.
-      try(PreparedStatement stmt = con.prepareStatement(
-          "select p.no, p.title"
-              + " from pms_project p"
-              + " order by p.no desc");
+      ArrayList<Integer> projectNoList = new ArrayList<>();
+
+      try (PreparedStatement stmt = con.prepareStatement(
+          "select no, title"
+              + " from pms_project"
+              + " order by no desc");
           ResultSet rs = stmt.executeQuery()) {
-        System.out.println("프로젝트들:");
-        // 프로젝트 번호를 보관할 컬렉션
-        ArrayList<Integer> noList = new ArrayList<>();
+        System.out.println("  프로젝트들:");
         while (rs.next()) {
-          System.out.printf("  %d, %s\n",
-              rs.getInt("no"),
-              rs.getString("title"));
-          noList.add(rs.getInt("no"));
-        }
-        if (noList.size() == 0) {
-          System.out.println("  프로젝트가 없습니다.");
-          return;
+          System.out.printf("  %d, %s\n", 
+              rs.getInt("no"), rs.getString("title"));          
+          projectNoList.add(rs.getInt("no"));
         }
 
-        // 사용자로부터 프로젝트 번호를 입력받는다.
+        if (projectNoList.size() == 0) {
+          System.out.println("프로젝트가 없습니다!");
+        }
         while (true) {
-          int no = Prompt.inputInt("프로젝트 번호?(0: 취소) ");
-          if (no == 0) {
-            System.out.println("작업 등록을 취소합니다.");
-            return;
-          } else if (noList.contains(no)) {
+          int no = Prompt.inputInt("프로젝트 번호? ");
+
+          if (projectNoList.contains(no)) {
             task.setProjectNo(no);
             break;
           }
-          System.out.println("프로젝트 번호가 맞지 않습니다.");
+          System.out.println("유효하지 않은 프로젝트 번호입니다.");
         }
-      } 
+      }
 
 
       task.setContent(Prompt.inputString("내용? "));
       task.setDeadline(Prompt.inputDate("마감일? "));
       task.setStatus(Prompt.inputInt("상태?\n0: 신규\n1: 진행중\n2: 완료\n> "));
 
-      // 작업을 수행할 담당자를 결정한다.
-      try(PreparedStatement stmt = con.prepareStatement(
-          "select mp.member_no, m.name member_name"
-              + " from pms_member_project mp inner join pms_member m"
-              + " on mp.member_no=m.no"
-              + " where mp.project_no=" + task.getProjectNo()
-              + " order by m.name asc");
-          ResultSet rs = stmt.executeQuery()) {
-        System.out.println("멤버들:");
-        // 멤버 번호를 보관할 컬렉션
-        ArrayList<Integer> noList = new ArrayList<>();
-        while (rs.next()) {
-          System.out.printf("  %d, %s\n",
-              rs.getInt("member_no"),
-              rs.getString("member_name"));
-          noList.add(rs.getInt("member_no"));
-        }
-        if (noList.size() == 0) {
-          System.out.println("  멤버가 없습니다.");
-          return;
-        }
+        ArrayList<Integer> memberNoList = new ArrayList<>();
+        Member member = new Member();
+        System.out.println("  멤버들:");
 
-        // 사용자로부터 멤버 번호를 입력받는다.
-        while (true) {
-          int no = Prompt.inputInt("멤버 번호?(0: 취소) ");
-          if (no == 0) {
-            System.out.println("작업 등록을 취소합니다.");
-            return;
-          } else if (noList.contains(no)) {
-            Member member = new Member();
-            member.setNo(no);
-            task.setOwner(member);
-            break;
+        try (PreparedStatement stmt = con.prepareStatement(
+            "select mp.member_no no, m.name"
+                + " from pms_member_project mp inner join pms_member m"
+                + " on mp.member_no = m.no"
+                + " where mp.project_no=" + task.getProjectNo()
+                + " order by m.no desc");
+            ResultSet rs = stmt.executeQuery()) {
+          while (rs.next()) {
+            System.out.printf("  %d, %s\n", 
+                rs.getInt("no"), rs.getString("name"));          
+            memberNoList.add(rs.getInt("no"));
           }
-          System.out.println("멤버 번호가 맞지 않습니다.");
         }
 
 
+
+      while (true) {
+        int no = Prompt.inputInt("담당자 번호? ");
+
+        if (projectNoList.contains(no)) {
+          member.setNo(no);
+          task.setOwner(member);
+          break;
+        }
+        System.out.println("유효하지 않은 담당자 번호입니다.");
       }
-      // 작업 정보를 입력한다.
+
+
       try (PreparedStatement stmt = con.prepareStatement(
-          "insert into pms_task(content,deadline,owner,project_no,status)"
+          "insert into pms_task(content,deadline,owner,status,project_no)"
               + " values(?,?,?,?,?)")) {
 
         stmt.setString(1, task.getContent());
         stmt.setDate(2, task.getDeadline());
         stmt.setInt(3, task.getOwner().getNo());
-        stmt.setInt(4, task.getProjectNo());
-        stmt.setInt(5, task.getStatus());
+        stmt.setInt(4, task.getStatus());
+        stmt.setInt(5, task.getProjectNo());
         stmt.executeUpdate();
 
         System.out.println("작업을 등록했습니다.");
-      }
-    } catch (Exception e) {
+
+      } 
+    }catch (Exception e) {
       System.out.println("작업 등록 중 오류 발생!");
       e.printStackTrace();
     }
   }
-}
+} 

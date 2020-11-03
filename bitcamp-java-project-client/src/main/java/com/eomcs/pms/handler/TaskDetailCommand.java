@@ -16,8 +16,8 @@ public class TaskDetailCommand implements Command {
     try (Connection con = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
         PreparedStatement stmt = con.prepareStatement(
-            "select t.content, t.deadline, t.owner, t.status m.name owner_name"
-                + " from pms_task t inner join  pms_member m on t.owner=m.no"
+            "select t.content, t.deadline, t.owner, t.status, m.name owner_name"
+                + " from pms_task t inner join pms_member m on t.owner=m.no"
                 + " where t.no = ?")) {
 
       stmt.setInt(1, no);
