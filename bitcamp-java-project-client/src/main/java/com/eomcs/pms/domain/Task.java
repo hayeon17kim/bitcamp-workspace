@@ -53,6 +53,5 @@ public class Task {
   public void setProjectTitle(String projectTitle) {
     this.projectTitle = projectTitle;
   }
-  
-  
+
 }

@@ -1,0 +1,54 @@
+<mapper namespace="BoardDao">
+
+<!-- 컬럼의 값을 어떤 자바 객체에 담을 것인지
+다음과 같이 따로 정의할 수 있다. 
+ - type 속성: 컬럼-프로퍼티 연결 
+ - id 속성: 컬럼-프로퍼티의 연결 정보를 가리킬 이름. 
+ 						SQL문을 정의할 때 사용
+ -->
+
+<resultMap type="com.eomcs.pms.domain.Board" id="BoardMap">
+	<id column="no" 		property="no"/>
+	<result column="title" 	property="title"/>
+	<result column="cdt" 		property="registeredDate"/>
+	<result column="vw_cnt" property="viewCount"/>
+	<association property="writer" javaType="com.eomcs.pms.domain.Member">
+		<!-- 자바 코드
+			Board b = new Board();
+			b.setNo(rs.getInt("no"));
+			b.setTitle(rs.getString("title"));
+			b.setRegisteredDate(rs.getString("cdt");
+			b.setViewCount(rs.getInt("vw_cnt"));
+		 -->
+		 <!-- 
+		 Member m = new Member();
+		 m.setNo(rs.getInt("no"));
+		 m.setName(rs.getString("name"));
+		 b.setWriter(m);
+		  -->
+		<id column="writer_no" property="no"/>
+		<result column="name" property="name"/>
+	</association>
+</resultMap>
+
+<!-- select 태그
+	-  -->
+	<select id="findAll" resultMap="BoardMap">
+	select 
+	b.no, 
+	b.title, 
+	b.cdt, 
+	b.vw_cdt, 
+	m.no writer_no, 
+	m.name
+	from pms_board b inner join pms_member m on b.writer=m.no
+	order by b.no desc
+	</select>
+	
+	<insert id="insert" parameterType="com.eomcs.pms.domain.board">
+		insert into pms_board(title,content,writer) 
+		values(#{title}, #{content}, #{writer.no})")
+	</insert>
+
+	<!-- select 태그 -->
+</mapper>
