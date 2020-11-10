@@ -1,11 +1,9 @@
 package com.eomcs.pms;
 
 import java.io.File;
-import java.sql.Connection;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -13,44 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import com.eomcs.context.ApplicationContextListener;
-import com.eomcs.pms.dao.BoardDao;
-import com.eomcs.pms.dao.MemberDao;
-import com.eomcs.pms.dao.ProjectDao;
-import com.eomcs.pms.dao.TaskDao;
-import com.eomcs.pms.dao.mariadb.BoardDaoImpl;
-import com.eomcs.pms.dao.mariadb.MemberDaoImpl;
-import com.eomcs.pms.dao.mariadb.ProjectDaoImpl;
-import com.eomcs.pms.dao.mariadb.TaskDaoImpl;
 import com.eomcs.pms.filter.CommandFilterManager;
 import com.eomcs.pms.filter.DefaultCommandFilter;
 import com.eomcs.pms.filter.FilterChain;
 import com.eomcs.pms.filter.LogCommandFilter;
-import com.eomcs.pms.handler.BoardAddCommand;
-import com.eomcs.pms.handler.BoardDeleteCommand;
-import com.eomcs.pms.handler.BoardDetailCommand;
-import com.eomcs.pms.handler.BoardListCommand;
-import com.eomcs.pms.handler.BoardUpdateCommand;
-import com.eomcs.pms.handler.Command;
-import com.eomcs.pms.handler.HelloCommand;
-import com.eomcs.pms.handler.LoginCommand;
-import com.eomcs.pms.handler.LogoutCommand;
-import com.eomcs.pms.handler.MemberAddCommand;
-import com.eomcs.pms.handler.MemberDeleteCommand;
-import com.eomcs.pms.handler.MemberDetailCommand;
-import com.eomcs.pms.handler.MemberListCommand;
-import com.eomcs.pms.handler.MemberUpdateCommand;
-import com.eomcs.pms.handler.ProjectAddCommand;
-import com.eomcs.pms.handler.ProjectDeleteCommand;
-import com.eomcs.pms.handler.ProjectDetailCommand;
-import com.eomcs.pms.handler.ProjectListCommand;
-import com.eomcs.pms.handler.ProjectUpdateCommand;
 import com.eomcs.pms.handler.Request;
-import com.eomcs.pms.handler.TaskAddCommand;
-import com.eomcs.pms.handler.TaskDeleteCommand;
-import com.eomcs.pms.handler.TaskDetailCommand;
-import com.eomcs.pms.handler.TaskListCommand;
-import com.eomcs.pms.handler.TaskUpdateCommand;
-import com.eomcs.pms.handler.WhoamiCommand;
 import com.eomcs.pms.listener.AppInitListener;
 import com.eomcs.util.Prompt;
 
@@ -107,7 +72,6 @@ public class App {
   public void service() throws Exception {
 
     notifyApplicationContextListenerOnServiceStarted();
-
 
     // 필터 관리자 준비
     CommandFilterManager filterManager = new CommandFilterManager();

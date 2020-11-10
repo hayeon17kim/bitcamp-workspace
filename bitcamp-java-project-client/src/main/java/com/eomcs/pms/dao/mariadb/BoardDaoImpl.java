@@ -1,17 +1,14 @@
 package com.eomcs.pms.dao.mariadb;
 
 import java.util.List;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.eomcs.pms.domain.Board;
 
-// 역할
-// - 게시글 데이터를 등록,조회,목록조회,변경,삭제 처리하는 일을 한다.
+// Mybatis 적용
+// => SqlSessionFactory를 자체적으로 생성하지 않고
+//    생성자를 통해 외부에서 주입 받는다.(Dependency Injection: DI)
 //
-
-
 public class BoardDaoImpl implements com.eomcs.pms.dao.BoardDao{
 
   SqlSessionFactory sqlSessionFactory;
@@ -29,8 +26,6 @@ public class BoardDaoImpl implements com.eomcs.pms.dao.BoardDao{
 
   @Override
   public int delete(int no) throws Exception {
-    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(
-        Resources.getResourceAsStream("com/eomcs/pms/conf/mybatis-config.xml"));
     try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
       return sqlSession.delete("BoardDao.delete", no);
     }
@@ -39,7 +34,6 @@ public class BoardDaoImpl implements com.eomcs.pms.dao.BoardDao{
   @Override
   public Board findByNo(int no) throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
-
       Board board = sqlSession.selectOne("BoardDao.findByNo", no);
       sqlSession.update("BoardDao.updateViewCount", no);
       return board;
