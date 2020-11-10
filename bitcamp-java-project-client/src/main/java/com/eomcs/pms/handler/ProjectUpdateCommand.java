@@ -3,18 +3,18 @@ package com.eomcs.pms.handler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.MemberDaoImpl;
-import com.eomcs.pms.dao.mariadb.ProjectDaoImpl;
+import com.eomcs.pms.dao.MemberDao;
+import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.util.Prompt;
 
 public class ProjectUpdateCommand implements Command {
 
-  ProjectDaoImpl projectDao;
-  MemberDaoImpl memberDao;
+  ProjectDao projectDao;
+  MemberDao memberDao;
 
-  public ProjectUpdateCommand(ProjectDaoImpl projectDao, MemberDaoImpl memberDao) {
+  public ProjectUpdateCommand(ProjectDao projectDao, MemberDao memberDao) {
     this.projectDao = projectDao;
     this.memberDao = memberDao;
   }
@@ -39,7 +39,6 @@ public class ProjectUpdateCommand implements Command {
           "시작일(%s)? ", project.getStartDate())));
       project.setEndDate(Prompt.inputDate(String.format(
           "종료일(%s)? ", project.getEndDate())));
-
 
       // 프로젝트에 참여할 회원 정보를 담는다.
       List<Member> members = new ArrayList<>();

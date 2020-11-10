@@ -2,14 +2,14 @@ package com.eomcs.pms.handler;
 
 import java.util.List;
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.ProjectDaoImpl;
+import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 
 public class ProjectListCommand implements Command {
-  ProjectDaoImpl projectDao;
+  ProjectDao projectDao;
 
-  public ProjectListCommand(ProjectDaoImpl projectDao) {
+  public ProjectListCommand(ProjectDao projectDao) {
     this.projectDao = projectDao;
   }
 

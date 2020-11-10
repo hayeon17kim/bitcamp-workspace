@@ -1,15 +1,15 @@
 package com.eomcs.pms.handler;
 
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.MemberDaoImpl;
+import com.eomcs.pms.dao.MemberDao;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.util.Prompt;
 
 public class MemberAddCommand implements Command {
 
-  MemberDaoImpl memberDao;
+  MemberDao memberDao;
 
-  public MemberAddCommand(MemberDaoImpl memberDao) {
+  public MemberAddCommand(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 

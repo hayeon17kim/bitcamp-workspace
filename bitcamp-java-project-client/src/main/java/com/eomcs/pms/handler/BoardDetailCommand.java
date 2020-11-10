@@ -1,14 +1,14 @@
 package com.eomcs.pms.handler;
 
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.BoardDaoImpl;
+import com.eomcs.pms.dao.BoardDao;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.util.Prompt;
 
 public class BoardDetailCommand implements Command {
-  BoardDaoImpl boardDao;
+  BoardDao boardDao;
 
-  public BoardDetailCommand(BoardDaoImpl boardDao) {
+  public BoardDetailCommand(BoardDao boardDao) {
     this.boardDao = boardDao;
   }
 

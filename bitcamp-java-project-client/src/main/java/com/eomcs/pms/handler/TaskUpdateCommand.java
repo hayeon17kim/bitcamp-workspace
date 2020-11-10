@@ -3,9 +3,9 @@ package com.eomcs.pms.handler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.MemberDaoImpl;
-import com.eomcs.pms.dao.mariadb.ProjectDaoImpl;
-import com.eomcs.pms.dao.mariadb.TaskDaoImpl;
+import com.eomcs.pms.dao.MemberDao;
+import com.eomcs.pms.dao.ProjectDao;
+import com.eomcs.pms.dao.TaskDao;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.domain.Task;
@@ -13,11 +13,11 @@ import com.eomcs.util.Prompt;
 
 public class TaskUpdateCommand implements Command {
 
-  TaskDaoImpl taskDao;
-  ProjectDaoImpl projectDao;
-  MemberDaoImpl memberDao;
+  TaskDao taskDao;
+  ProjectDao projectDao;
+  MemberDao memberDao;
 
-  public TaskUpdateCommand(TaskDaoImpl taskDao, ProjectDaoImpl projectDao, MemberDaoImpl memberDao) {
+  public TaskUpdateCommand(TaskDao taskDao, ProjectDao projectDao, MemberDao memberDao) {
     this.taskDao = taskDao;
     this.projectDao = projectDao;
     this.memberDao = memberDao;

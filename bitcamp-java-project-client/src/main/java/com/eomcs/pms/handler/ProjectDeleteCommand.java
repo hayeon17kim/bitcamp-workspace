@@ -1,13 +1,13 @@
 package com.eomcs.pms.handler;
 
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.ProjectDaoImpl;
+import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.util.Prompt;
 
 public class ProjectDeleteCommand implements Command {
-  ProjectDaoImpl projectDao;
+  ProjectDao projectDao;
 
-  public ProjectDeleteCommand(ProjectDaoImpl projectDao) {
+  public ProjectDeleteCommand(ProjectDao projectDao) {
     this.projectDao = projectDao;
   }
 

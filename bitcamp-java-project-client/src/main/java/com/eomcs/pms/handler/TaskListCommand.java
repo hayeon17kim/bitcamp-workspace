@@ -2,13 +2,13 @@ package com.eomcs.pms.handler;
 
 import java.util.List;
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.TaskDaoImpl;
+import com.eomcs.pms.dao.TaskDao;
 import com.eomcs.pms.domain.Task;
 
 public class TaskListCommand implements Command {
-  TaskDaoImpl taskDao;
+  TaskDao taskDao;
 
-  public TaskListCommand(TaskDaoImpl taskDao) {
+  public TaskListCommand(TaskDao taskDao) {
     this.taskDao = taskDao;
   }
 

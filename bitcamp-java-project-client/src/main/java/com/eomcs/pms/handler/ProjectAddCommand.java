@@ -3,18 +3,18 @@ package com.eomcs.pms.handler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.MemberDaoImpl;
-import com.eomcs.pms.dao.mariadb.ProjectDaoImpl;
+import com.eomcs.pms.dao.MemberDao;
+import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.util.Prompt;
 
 public class ProjectAddCommand implements Command {
 
-  ProjectDaoImpl projectDao;
-  MemberDaoImpl memberDao;
+  ProjectDao projectDao;
+  MemberDao memberDao;
 
-  public ProjectAddCommand(ProjectDaoImpl projectDao, MemberDaoImpl memberDao) {
+  public ProjectAddCommand(ProjectDao projectDao, MemberDao memberDao) {
     this.projectDao = projectDao;
     this.memberDao = memberDao;
   }
@@ -32,7 +32,6 @@ public class ProjectAddCommand implements Command {
 
       Member loginUser = (Member) context.get("loginUser");
       project.setOwner(loginUser);
-      
 
       // 프로젝트에 참여할 회원 정보를 담는다.
       List<Member> members = new ArrayList<>();
@@ -54,6 +53,8 @@ public class ProjectAddCommand implements Command {
       project.setMembers(members);
 
       projectDao.insert(project);
+
+      System.out.println("프로젝트가 등록되었습니다!");
 
     } catch (Exception e) {
       System.out.println("프로젝트 등록 중 오류 발생!");

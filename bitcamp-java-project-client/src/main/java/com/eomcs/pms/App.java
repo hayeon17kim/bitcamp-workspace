@@ -13,13 +13,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import com.eomcs.context.ApplicationContextListener;
+import com.eomcs.pms.dao.BoardDao;
+import com.eomcs.pms.dao.MemberDao;
+import com.eomcs.pms.dao.ProjectDao;
+import com.eomcs.pms.dao.TaskDao;
 import com.eomcs.pms.dao.mariadb.BoardDaoImpl;
 import com.eomcs.pms.dao.mariadb.MemberDaoImpl;
 import com.eomcs.pms.dao.mariadb.ProjectDaoImpl;
 import com.eomcs.pms.dao.mariadb.TaskDaoImpl;
-import com.eomcs.pms.filter.AuthCommandFilter;
 import com.eomcs.pms.filter.CommandFilterManager;
 import com.eomcs.pms.filter.DefaultCommandFilter;
+import com.eomcs.pms.filter.FilterChain;
 import com.eomcs.pms.filter.LogCommandFilter;
 import com.eomcs.pms.handler.BoardAddCommand;
 import com.eomcs.pms.handler.BoardDeleteCommand;
@@ -46,7 +50,7 @@ import com.eomcs.pms.handler.TaskDeleteCommand;
 import com.eomcs.pms.handler.TaskDetailCommand;
 import com.eomcs.pms.handler.TaskListCommand;
 import com.eomcs.pms.handler.TaskUpdateCommand;
-import com.eomcs.pms.handler.whoamiCommand;
+import com.eomcs.pms.handler.WhoamiCommand;
 import com.eomcs.pms.listener.AppInitListener;
 import com.eomcs.util.Prompt;
 
@@ -104,64 +108,27 @@ public class App {
 
     notifyApplicationContextListenerOnServiceStarted();
 
-    Map<String,Command> commandMap = new HashMap<>();
 
-    Connection con = (Connection) context.get("con");
-    BoardDaoImpl boardDao = new BoardDaoImpl(con);
-    MemberDaoImpl memberDao = new MemberDaoImpl(con);
-    ProjectDaoImpl projectDao = new ProjectDaoImpl(con);
-    TaskDaoImpl taskDao = new TaskDaoImpl(con);
-
-    commandMap.put("/board/add", new BoardAddCommand(boardDao, memberDao));
-    commandMap.put("/board/list", new BoardListCommand(boardDao));
-    commandMap.put("/board/detail", new BoardDetailCommand(boardDao));
-    commandMap.put("/board/update", new BoardUpdateCommand(boardDao));
-    commandMap.put("/board/delete", new BoardDeleteCommand(boardDao));
-
-    commandMap.put("/member/add", new MemberAddCommand(memberDao));
-    commandMap.put("/member/list", new MemberListCommand(memberDao));
-    commandMap.put("/member/detail", new MemberDetailCommand(memberDao));
-    commandMap.put("/member/update", new MemberUpdateCommand(memberDao));
-    commandMap.put("/member/delete", new MemberDeleteCommand(memberDao));
-
-    commandMap.put("/project/add", new ProjectAddCommand(projectDao, memberDao));
-    commandMap.put("/project/list", new ProjectListCommand(projectDao));
-    commandMap.put("/project/detail", new ProjectDetailCommand(projectDao));
-    commandMap.put("/project/update", new ProjectUpdateCommand(projectDao, memberDao));
-    commandMap.put("/project/delete", new ProjectDeleteCommand(projectDao));
-
-    commandMap.put("/task/add", new TaskAddCommand(taskDao, projectDao, memberDao));
-    commandMap.put("/task/list", new TaskListCommand(taskDao));
-    commandMap.put("/task/detail", new TaskDetailCommand(taskDao));
-    commandMap.put("/task/update", new TaskUpdateCommand(taskDao, projectDao, memberDao));
-    commandMap.put("/task/delete", new TaskDeleteCommand(taskDao));
-
-    commandMap.put("/hello", new HelloCommand());
-    commandMap.put("/whoami", new whoamiCommand());
-    commandMap.put("/login", new LoginCommand(memberDao));
-    commandMap.put("/logout", new LogoutCommand());
-    
-    
-    // commandMap 객체를 context 맵에 보관한다.
-    // => 필터나 커맨드 객체가 사용할 수 있기 때문이다. 
-    context.put("commandMap", commandMap);
-    
-    // 사용자가 입력한 명령에 따라 커맨드 객체를 실행한다. 
-    
-    //commandMap.put("/loginStatus", new LoginStatusCommand());
-
-    // 필터관리자 준비
+    // 필터 관리자 준비
     CommandFilterManager filterManager = new CommandFilterManager();
-    filterManager.add(new AuthCommandFilter());
-    filterManager.add(new LogCommandFilter(new File("command.log")));
+
+    // 필터를 등록한다.
+    filterManager.add(new LogCommandFilter());
+    //filterManager.add(new AuthCommandFilter());
     filterManager.add(new DefaultCommandFilter());
-    
+
+    // 필터가 사용할 값을 context 맵에 담는다.
+    File logFile = new File("command.log");
+    context.put("logFile", logFile);
+
+    // 필터들을 준비시킨다.
     filterManager.init(context);
-    
-    
+
+    // 사용자가 입력한 명령을 처리할 필터 체인을 얻는다.
+    FilterChain filterChain = filterManager.getFilterChains();
+
     Deque<String> commandStack = new ArrayDeque<>();
     Queue<String> commandQueue = new LinkedList<>();
-    
 
     loop:
       while (true) {
@@ -170,10 +137,6 @@ public class App {
         if (inputStr.length() == 0) {
           continue;
         }
-        
-        
-        //makeSb(inputStr);
-        //saveLog();
 
         commandStack.push(inputStr);
         commandQueue.offer(inputStr);
@@ -186,22 +149,23 @@ public class App {
             System.out.println("안녕!");
             break loop;
           default:
-            // 커멘드나 필터가 사용할 객체를 준비한다.
+            // 커맨드나 필터가 사용할 객체를 준비한다.
             Request request = new Request(inputStr, context);
-            
-            // 사용자가 명령을 입력하면 필터 관리자를 실행시킨다.
-            filterManager.reset();
-            filterManager.doFilter(request);            
+
+            // 필터들의 체인을 실행한다.
+            if (filterChain != null) {
+              filterChain.doFilter(request);
+            }
         }
         System.out.println();
       }
-                                
     Prompt.close();
+
+    // 필터들을 마무리시킨다.
     filterManager.destroy();
+
     notifyApplicationContextListenerOnServiceStopped();
   }
-
-  
 
   void printCommandHistory(Iterator<String> iterator) {
     try {

@@ -1,14 +1,14 @@
 package com.eomcs.pms.handler;
 
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.BoardDaoImpl;
+import com.eomcs.pms.dao.BoardDao;
 import com.eomcs.util.Prompt;
 
 public class BoardDeleteCommand implements Command {
 
-  BoardDaoImpl boardDao;
+  BoardDao boardDao;
 
-  public BoardDeleteCommand(BoardDaoImpl boardDao) {
+  public BoardDeleteCommand(BoardDao boardDao) {
     this.boardDao = boardDao;
   }
 

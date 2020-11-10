@@ -3,22 +3,20 @@ package com.eomcs.pms.handler;
 import java.util.Map;
 import com.eomcs.pms.domain.Member;
 
-public class whoamiCommand implements Command {
+public class WhoamiCommand implements Command {
 
   @Override
-  public void execute(Map<String, Object> context)  {
-    // TODO Auto-generated method stub
-
-    Member loginUser = (Member) context.get("loginUser");
-    if (loginUser == null) {
-      System.out.println("로그인하지 않았습니다!");
+  public void execute(Map<String,Object> context) {
+    Member member = (Member) context.get("loginUser");
+    if (member == null) {
+      System.out.println("로그인 하지 않았습니다!");
       return;
     }
-
-    System.out.printf("사용자번호: %s\n", loginUser.getNo());
-    System.out.printf("이름: %s\n", loginUser.getName());
-    System.out.printf("이메일: %s\n", loginUser.getEmail());
-    System.out.printf("사진: %s\n", loginUser.getPhoto());
-    System.out.printf("전화: %s\n", loginUser.getTel());
+    System.out.printf("사용자 번호: %d\n", member.getNo());
+    System.out.printf("이름: %s\n", member.getName());
+    System.out.printf("이메일: %s\n", member.getEmail());
+    System.out.printf("사진: %s\n", member.getPhoto());
+    System.out.printf("전화: %s\n", member.getTel());
+    System.out.printf("등록일: %s\n", member.getRegisteredDate());
   }
 }

@@ -1,13 +1,13 @@
 package com.eomcs.pms.handler;
 
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.TaskDaoImpl;
+import com.eomcs.pms.dao.TaskDao;
 import com.eomcs.util.Prompt;
 
 public class TaskDeleteCommand implements Command {
-  TaskDaoImpl taskDao;
+  TaskDao taskDao;
 
-  public TaskDeleteCommand(TaskDaoImpl taskDao) {
+  public TaskDeleteCommand(TaskDao taskDao) {
     this.taskDao = taskDao;
   }
 

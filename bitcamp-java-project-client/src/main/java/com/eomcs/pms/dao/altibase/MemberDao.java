@@ -1,25 +1,21 @@
-package com.eomcs.pms.dao.mariadb;
+package com.eomcs.pms.dao.altibase;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import com.eomcs.pms.domain.Member;
 
-public class MemberDaoImpl implements com.eomcs.pms.dao.MemberDao {
+public class MemberDao {
 
-  Connection con;
-
-  public MemberDaoImpl(Connection con) {
-    this.con = con;
-  }
-
-  @Override
   public int insert(Member member) throws Exception {
-    try (PreparedStatement stmt = con.prepareStatement(
-        "insert into pms_member(name,email,password,photo,tel)"
-            + " values(?,?,password(?),?,?)")) {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
+        PreparedStatement stmt = con.prepareStatement(
+            "insert into pms_member(name,email,password,photo,tel)"
+                + " values(?,?,password(?),?,?)")) {
 
       stmt.setString(1, member.getName());
       stmt.setString(2, member.getEmail());
@@ -30,22 +26,24 @@ public class MemberDaoImpl implements com.eomcs.pms.dao.MemberDao {
     }
   }
 
-  @Override
   public int delete(int no) throws Exception {
-    try (PreparedStatement stmt = con.prepareStatement(
-        "delete from pms_member where no=?")) {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
+        PreparedStatement stmt = con.prepareStatement(
+            "delete from pms_member where no=?")) {
 
       stmt.setInt(1, no);
       return stmt.executeUpdate();
     }
   }
 
-  @Override
   public Member findByNo(int no) throws Exception {
-    try (PreparedStatement stmt = con.prepareStatement(
-        "select no, name, email, photo, tel, cdt"
-            + " from pms_member"
-            + " where no = ?")) {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
+        PreparedStatement stmt = con.prepareStatement(
+            "select no, name, email, photo, tel, cdt"
+                + " from pms_member"
+                + " where no = ?")) {
 
       stmt.setInt(1, no);
 
@@ -66,12 +64,13 @@ public class MemberDaoImpl implements com.eomcs.pms.dao.MemberDao {
     }
   }
 
-  @Override
   public Member findByName(String name) throws Exception {
-    try (PreparedStatement stmt = con.prepareStatement(
-        "select no, name, email, photo, tel, cdt"
-            + " from pms_member"
-            + " where name = ?")) {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
+        PreparedStatement stmt = con.prepareStatement(
+            "select no, name, email, photo, tel, cdt"
+                + " from pms_member"
+                + " where name = ?")) {
 
       stmt.setString(1, name);
 
@@ -92,12 +91,13 @@ public class MemberDaoImpl implements com.eomcs.pms.dao.MemberDao {
     }
   }
 
-  @Override
   public List<Member> findAll() throws Exception {
-    try (PreparedStatement stmt = con.prepareStatement(
-        "select no, name, email, tel, cdt"
-            + " from pms_member"
-            + " order by no desc")) {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
+        PreparedStatement stmt = con.prepareStatement(
+            "select no, name, email, tel, cdt"
+                + " from pms_member"
+                + " order by no desc")) {
 
       try (ResultSet rs = stmt.executeQuery()) {
         ArrayList<Member> list = new ArrayList<>();
@@ -115,16 +115,17 @@ public class MemberDaoImpl implements com.eomcs.pms.dao.MemberDao {
     }
   }
 
-  @Override
   public int update(Member member) throws Exception {
-    try (PreparedStatement stmt = con.prepareStatement(
-        "update pms_member set"
-            + " name = ?,"
-            + " email = ?,"
-            + " password = password(?),"
-            + " photo = ?,"
-            + " tel = ?"
-            + " where no = ?")) {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
+        PreparedStatement stmt = con.prepareStatement(
+            "update pms_member set"
+                + " name = ?,"
+                + " email = ?,"
+                + " password = password(?),"
+                + " photo = ?,"
+                + " tel = ?"
+                + " where no = ?")) {
 
       stmt.setString(1, member.getName());
       stmt.setString(2, member.getEmail());
@@ -136,14 +137,15 @@ public class MemberDaoImpl implements com.eomcs.pms.dao.MemberDao {
     }
   }
 
-  @Override
   public List<Member> findByProjectNo(int projectNo) throws Exception {
-    try (PreparedStatement stmt = con.prepareStatement(
-        "select mp.member_no, m.name"
-            + " from pms_member_project mp inner join pms_member m"
-            + " on mp.member_no=m.no"
-            + " where mp.project_no=" + projectNo
-            + " order by m.name asc");
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
+        PreparedStatement stmt = con.prepareStatement(
+            "select mp.member_no, m.name"
+                + " from pms_member_project mp inner join pms_member m"
+                + " on mp.member_no=m.no"
+                + " where mp.project_no=" + projectNo
+                + " order by m.name asc");
         ResultSet rs = stmt.executeQuery()) {
 
       ArrayList<Member> members = new ArrayList<>();
@@ -154,33 +156,6 @@ public class MemberDaoImpl implements com.eomcs.pms.dao.MemberDao {
         members.add(member);
       }
       return members;
-    }
-  }
-
-  @Override
-  public Member findByEmailPassword(String email, String password) throws Exception {
-    try (PreparedStatement stmt = con.prepareStatement(
-        "select no, name, email, photo, tel, cdt"
-            + " from pms_member"
-            + " where email = ? and password = password(?)")) {
-
-      stmt.setString(1, email);
-      stmt.setString(2, password);
-
-      try (ResultSet rs = stmt.executeQuery()) {
-        if (rs.next()) {
-          Member member = new Member();
-          member.setNo(rs.getInt("no"));
-          member.setName(rs.getString("name"));
-          member.setEmail(rs.getString("email"));
-          member.setPhoto(rs.getString("photo"));
-          member.setTel(rs.getString("tel"));
-          member.setRegisteredDate(rs.getDate("cdt"));
-          return member;
-        } else {
-          return null;
-        }
-      }
     }
   }
 }

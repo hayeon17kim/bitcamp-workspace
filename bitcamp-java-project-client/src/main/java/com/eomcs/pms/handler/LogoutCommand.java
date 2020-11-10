@@ -7,15 +7,14 @@ public class LogoutCommand implements Command {
 
   @Override
   public void execute(Map<String,Object> context) {
-    System.out.println("[로그아웃]");
-
-    Member member = (Member) context.get("loginUser");
-
-    if (member == null) {
-      System.out.println("이미 로그아웃 되어 있습니다.");
+    Member loginUser = (Member) context.get("loginUser");
+    if (loginUser == null) {
+      System.out.println("로그인 된 상태가 아닙니다!");
       return;
     }
+
+    System.out.printf("%s 님 안녕히 가세요!\n", loginUser.getName());
+
     context.remove("loginUser");
-    System.out.printf("%s님 안녕히가세요.\n", member.getName());
   }
 }

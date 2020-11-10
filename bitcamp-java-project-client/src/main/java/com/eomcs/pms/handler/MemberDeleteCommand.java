@@ -1,13 +1,13 @@
 package com.eomcs.pms.handler;
 
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.MemberDaoImpl;
+import com.eomcs.pms.dao.MemberDao;
 import com.eomcs.util.Prompt;
 
 public class MemberDeleteCommand implements Command {
-  MemberDaoImpl memberDao;
+  MemberDao memberDao;
 
-  public MemberDeleteCommand(MemberDaoImpl memberDao) {
+  public MemberDeleteCommand(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 

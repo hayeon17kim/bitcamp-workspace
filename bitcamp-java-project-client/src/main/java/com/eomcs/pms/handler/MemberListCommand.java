@@ -2,13 +2,13 @@ package com.eomcs.pms.handler;
 
 import java.util.List;
 import java.util.Map;
-import com.eomcs.pms.dao.mariadb.MemberDaoImpl;
+import com.eomcs.pms.dao.MemberDao;
 import com.eomcs.pms.domain.Member;
 
 public class MemberListCommand implements Command {
-  MemberDaoImpl memberDao;
+  MemberDao memberDao;
 
-  public MemberListCommand(MemberDaoImpl memberDao) {
+  public MemberListCommand(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 
