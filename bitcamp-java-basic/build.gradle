@@ -10,6 +10,9 @@ repositories {
 }
 
 dependencies {
+		// MyBatis 퍼시스턴스 프레임워크
+		implementation 'org.mybatis:mybatis:3.5.6'
+
     // Oracle JDBC Driver
     implementation 'com.oracle.database.jdbc:ojdbc10-production:19.8.0.0'
     // MSSQL JDBC Driver

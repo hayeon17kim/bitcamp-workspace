@@ -10,6 +10,18 @@
   <settings>
     <setting name="cacheEnabled" value="true"/>
   </settings>
+  
+	<typeAliases>
+	
+		<package name="com.eomcs.pms.domain"/>
+		<!-- 
+				<typeAlias type="com.eomcs.pms.domain.Board" alias="board"></typeAlias>
+		<typeAlias type="com.eomcs.pms.domain.Member" alias="member"></typeAlias>
+		<typeAlias type="com.eomcs.pms.domain.Project" alias="project"></typeAlias>
+		<typeAlias type="com.eomcs.pms.domain.Task" alias="task"></typeAlias>
+		 -->
+
+	</typeAliases>
 
   <!-- DBMS 접속 정보들 -->
   <environments default="development">

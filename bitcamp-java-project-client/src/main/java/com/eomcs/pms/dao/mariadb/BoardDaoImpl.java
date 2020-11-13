@@ -41,9 +41,9 @@ public class BoardDaoImpl implements com.eomcs.pms.dao.BoardDao{
   }
 
   @Override
-  public List<Board> findAll() throws Exception {
+  public List<Board> findAll(String keyword) throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      return sqlSession.selectList("BoardDao.findAll");
+      return sqlSession.selectList("BoardDao.findAll", keyword);
     }
   }
 
@@ -51,6 +51,13 @@ public class BoardDaoImpl implements com.eomcs.pms.dao.BoardDao{
   public int update(Board board) throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
       return sqlSession.update("BoardDao.update", board);
+    }
+  }
+
+  @Override
+  public List<Board> findByKeyword(String keyword) throws Exception {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+      return sqlSession.selectList("BoardDao.findAll", keyword);
     }
   }
 }
