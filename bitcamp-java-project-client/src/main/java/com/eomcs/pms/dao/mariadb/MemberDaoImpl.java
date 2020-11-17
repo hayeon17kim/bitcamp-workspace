@@ -16,47 +16,43 @@ public class MemberDaoImpl implements com.eomcs.pms.dao.MemberDao {
 
   @Override
   public int insert(Member member) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.insert("MemberDao.insert", member);
     }
   }
 
   @Override
   public int delete(int no) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.delete("MemberDao.delete", no);
     }
   }
 
   @Override
   public Member findByNo(int no) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.selectOne("MemberDao.findByNo", no);
     }
   }
 
   @Override
-  public Member findByName(String name) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+  public List<Member> findByName(String name) throws Exception {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       List<Member> members = sqlSession.selectList("MemberDao.findByName", name);
-      if (members.size() > 0) {
-        return members.get(0);
-      } else {
-        return null;
-      }
+      return members;
     }
   }
 
   @Override
-  public List<Member> findAll() throws Exception {
+  public List<Member> findAll(String keyword) throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      return sqlSession.selectList("MemberDao.findAll");
+      return sqlSession.selectList("MemberDao.findAll", keyword);
     }
   }
 
   @Override
   public int update(Member member) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.update("MemberDao.update", member);
     }
   }

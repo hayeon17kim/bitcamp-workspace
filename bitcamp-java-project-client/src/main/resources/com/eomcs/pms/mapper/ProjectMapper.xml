@@ -41,19 +41,7 @@
 		inner join pms_member m on p.owner=m.no
 		left outer join pms_member_project mp on p.no=mp.project_no
 		left outer join pms_member m2 on mp.member_no=m2.no
-		<where>
-		<choose>
-		 <when test="item == 1">
-			p.title like concat('%', #{keyword}, '%')
-			</when>
-		<when test="item == 2">
-			m.name like concat('%', #{keyword}, '%')
-		</when>
-		<when test="item == 3">
-			m2.name like concat('%', #{keyword}, '%')
-		</when>
-		</choose>
-		</where>
+		
 		order by p.no desc
 	</select>
 
@@ -93,11 +81,17 @@
 			pms_member_project mp on p.no=mp.project_no
 			left outer join pms_member
 			m2 on mp.member_no=m2.no
-		order by p.no desc
 	</sql>
 
-	<select id="findAll" resultMap="ProjectMap">
+	<select id="findAll" resultMap="ProjectMap" parameterType="string">
 		<include refid="sql1"/>
+		<if test="keyword != null">
+		where
+			p.title like concat('%', #{keyword}, '%')
+			or m.name like concat('%', #{keyword}, '%')
+			or m2.name like concat('%', #{keyword}, '%')
+		</if>
+		order by p.no desc
 	</select>
 
 	<insert id="insert" parameterType="project"
@@ -113,7 +107,7 @@
 		values
 			(#{memberNo},#{projectNo})
 	</insert>
-	
+
 	<insert id="insertMembers" parameterType="project">
 		insert into
 		pms_member_project(member_no, project_no)
@@ -153,13 +147,13 @@
 	</select>
 
 	<update id="update" parameterType="project">
-		update pms_project set
-		title =
-		#{title},
-		content = #{content},
-		sdt = #{startDate},
-		edt = #{endDate},
-		owner = #{owner.no}
+		update pms_project 
+		<set>
+			<if test="title != null">title = #{title}, </if>
+			<if test="content != null">content = #{content}, </if>
+			<if test="startDate != null">sdt = #{startDate}, </if>
+			<if test="endDate != null">edt = #{endDate} </if>
+		</set>
 		where no = #{no}
 	</update>
 

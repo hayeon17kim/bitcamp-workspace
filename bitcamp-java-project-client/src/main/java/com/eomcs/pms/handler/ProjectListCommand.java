@@ -2,18 +2,15 @@ package com.eomcs.pms.handler;
 
 import java.util.List;
 import java.util.Map;
-import com.eomcs.pms.dao.MemberDao;
-import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
+import com.eomcs.pms.service.ProjectService;
 
 public class ProjectListCommand implements Command {
-  ProjectDao projectDao;
-  MemberDao memberDao;
+  ProjectService projectService;
 
-  public ProjectListCommand(ProjectDao projectDao, MemberDao memberDao) {
-    this.projectDao = projectDao;
-    this.memberDao = memberDao;
+  public ProjectListCommand(ProjectService projectService) {
+    this.projectService =projectService;
   }
 
   @Override
@@ -21,7 +18,7 @@ public class ProjectListCommand implements Command {
     System.out.println("[프로젝트 목록]");
 
     try {
-      List<Project> list = projectDao.findAll();
+      List<Project> list = projectService.list((String)null);
       System.out.println("번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원");
 
       for (Project project : list) {

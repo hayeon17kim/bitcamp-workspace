@@ -1,15 +1,21 @@
 package com.eomcs.pms.handler;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.domain.Project;
+import com.eomcs.pms.domain.Task;
+import com.eomcs.pms.service.ProjectService;
+import com.eomcs.pms.service.TaskService;
 import com.eomcs.util.Prompt;
 
 public class ProjectDetailCommand implements Command {
-  ProjectDao projectDao;
+  ProjectService projectService;
+  TaskService taskService;
 
-  public ProjectDetailCommand(ProjectDao projectDao) {
-    this.projectDao = projectDao;
+  public ProjectDetailCommand(ProjectService projectService, TaskService taskService) {
+    this.projectService = projectService;
+    this.taskService = taskService;
   }
 
   @Override
@@ -18,7 +24,7 @@ public class ProjectDetailCommand implements Command {
     int no = Prompt.inputInt("번호? ");
 
     try {
-      Project project = projectDao.findByNo(no);
+      Project project = projectService.get(no);
       if (project == null) {
         System.out.println("해당 번호의 프로젝트가 존재하지 않습니다.");
         return;
@@ -34,6 +40,33 @@ public class ProjectDetailCommand implements Command {
       project.getMembers().forEach(
           member -> System.out.print(member.getName() + " "));
       System.out.println();
+      System.out.println("작업: ");
+      System.out.println("------------------------------------");
+      Map<String, Object> map = new HashMap<>();
+      map.put("projectNo", project.getNo());
+      List<Task> tasks = taskService.list(no);
+      System.out.println("번호, 작업내용, 마감일, 작업자, 상태");
+
+      for (Task task : tasks) {
+        String stateLabel = null;
+        switch (task.getStatus()) {
+          case 1:
+            stateLabel = "진행중";
+            break;
+          case 2:
+            stateLabel = "완료";
+            break;
+          default:
+            stateLabel = "신규";
+        }
+        System.out.printf("%d, %s, %s, %s, %s\n",
+            task.getNo(),
+            task.getContent(),
+            task.getDeadline(),
+            task.getOwner().getName(),
+            stateLabel);
+      }
+      System.out.println(); 
 
     } catch (Exception e) {
       System.out.println("프로젝트 조회 중 오류 발생!");

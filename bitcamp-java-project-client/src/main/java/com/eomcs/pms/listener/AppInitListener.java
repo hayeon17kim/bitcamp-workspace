@@ -3,7 +3,6 @@ package com.eomcs.pms.listener;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.pms.dao.BoardDao;
@@ -42,6 +41,15 @@ import com.eomcs.pms.handler.TaskDetailCommand;
 import com.eomcs.pms.handler.TaskListCommand;
 import com.eomcs.pms.handler.TaskUpdateCommand;
 import com.eomcs.pms.handler.WhoamiCommand;
+import com.eomcs.pms.service.BoardService;
+import com.eomcs.pms.service.DefaultBoardService;
+import com.eomcs.pms.service.DefaultMemberService;
+import com.eomcs.pms.service.DefaultProjectService;
+import com.eomcs.pms.service.DefaultTaskService;
+import com.eomcs.pms.service.MemberService;
+import com.eomcs.pms.service.ProjectService;
+import com.eomcs.pms.service.TaskService;
+import com.eomcs.util.SqlSessionFactoryProxy;
 
 public class AppInitListener implements ApplicationContextListener {
   @Override
@@ -51,44 +59,51 @@ public class AppInitListener implements ApplicationContextListener {
     // 시스템에서 사용할 객체를 준비한다.
     try {
       // Mybatis 객체 준비
-      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(
-          Resources.getResourceAsStream("com/eomcs/pms/conf/mybatis-config.xml"));
+      SqlSessionFactoryProxy sqlSessionFactory = new SqlSessionFactoryProxy(
+          new SqlSessionFactoryBuilder().build(
+          Resources.getResourceAsStream("com/eomcs/pms/conf/mybatis-config.xml")));
 
       // DAO 구현체 생성
       BoardDao boardDao = new BoardDaoImpl(sqlSessionFactory);
       MemberDao memberDao = new MemberDaoImpl(sqlSessionFactory);
       ProjectDao projectDao = new ProjectDaoImpl(sqlSessionFactory);
       TaskDao taskDao = new TaskDaoImpl(sqlSessionFactory);
-
+      
+      ProjectService projectService = new DefaultProjectService(taskDao, projectDao, sqlSessionFactory);
+      MemberService memberService = new DefaultMemberService(memberDao);
+      TaskService taskService = new DefaultTaskService(taskDao);
+      BoardService boardService = new DefaultBoardService(boardDao);
+      
       // Command 구현체 생성 및 commandMap 객체 준비
       Map<String,Command> commandMap = new HashMap<>();
 
-      commandMap.put("/board/add", new BoardAddCommand(boardDao, memberDao));
-      commandMap.put("/board/list", new BoardListCommand(boardDao));
-      commandMap.put("/board/detail", new BoardDetailCommand(boardDao));
-      commandMap.put("/board/update", new BoardUpdateCommand(boardDao));
-      commandMap.put("/board/delete", new BoardDeleteCommand(boardDao));
-      commandMap.put("/board/search", new BoardSearchCommand(boardDao, memberDao));
+      commandMap.put("/board/add", new BoardAddCommand(boardService));
+      commandMap.put("/board/list", new BoardListCommand(boardService));
+      commandMap.put("/board/detail", new BoardDetailCommand(boardService));
+      commandMap.put("/board/update", new BoardUpdateCommand(boardService));
+      commandMap.put("/board/delete", new BoardDeleteCommand(boardService));
+      commandMap.put("/board/search", new BoardSearchCommand(boardService));
 
-      commandMap.put("/member/add", new MemberAddCommand(memberDao));
-      commandMap.put("/member/list", new MemberListCommand(memberDao));
-      commandMap.put("/member/detail", new MemberDetailCommand(memberDao));
-      commandMap.put("/member/update", new MemberUpdateCommand(memberDao));
-      commandMap.put("/member/delete", new MemberDeleteCommand(memberDao));
+      commandMap.put("/member/add", new MemberAddCommand(memberService));
+      commandMap.put("/member/list", new MemberListCommand(memberService));
+      commandMap.put("/member/detail", new MemberDetailCommand(memberService));
+      commandMap.put("/member/update", new MemberUpdateCommand(memberService));
+      commandMap.put("/member/delete", new MemberDeleteCommand(memberService));
 
-      commandMap.put("/project/add", new ProjectAddCommand(projectDao, memberDao));
-      commandMap.put("/project/list", new ProjectListCommand(projectDao, memberDao));
-      commandMap.put("/project/detail", new ProjectDetailCommand(projectDao));
-      commandMap.put("/project/update", new ProjectUpdateCommand(projectDao, memberDao));
-      commandMap.put("/project/delete", new ProjectDeleteCommand(projectDao, taskDao));
-      commandMap.put("/project/search", new ProjectSearchCommand(projectDao));
-      commandMap.put("/project/detailSearch", new ProjectDetailSearchCommand(projectDao));
+      commandMap.put("/project/add", new ProjectAddCommand(projectService, memberService));
+      commandMap.put("/project/list", new ProjectListCommand(projectService));
+      commandMap.put("/project/detail", new ProjectDetailCommand(projectService, taskService));
+      commandMap.put("/project/update", new ProjectUpdateCommand(projectService));
+      
+      commandMap.put("/project/delete", new ProjectDeleteCommand(projectService));
+      commandMap.put("/project/search", new ProjectSearchCommand(projectService));
+      commandMap.put("/project/detailSearch", new ProjectDetailSearchCommand(projectService));
 
-      commandMap.put("/task/add", new TaskAddCommand(taskDao, projectDao, memberDao));
-      commandMap.put("/task/list", new TaskListCommand(taskDao));
-      commandMap.put("/task/detail", new TaskDetailCommand(taskDao));
-      commandMap.put("/task/update", new TaskUpdateCommand(taskDao, projectDao, memberDao));
-      commandMap.put("/task/delete", new TaskDeleteCommand(taskDao));
+      commandMap.put("/task/add", new TaskAddCommand(taskService, projectService, memberService));
+      commandMap.put("/task/list", new TaskListCommand(taskService));
+      commandMap.put("/task/detail", new TaskDetailCommand(taskService));
+      commandMap.put("/task/update", new TaskUpdateCommand(taskService, projectService, memberService));
+      commandMap.put("/task/delete", new TaskDeleteCommand(taskService));
 
       commandMap.put("/hello", new HelloCommand());
 

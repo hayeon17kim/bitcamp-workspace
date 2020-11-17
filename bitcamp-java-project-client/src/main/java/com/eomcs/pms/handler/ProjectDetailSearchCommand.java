@@ -6,15 +6,16 @@ import java.util.Map;
 import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
+import com.eomcs.pms.service.ProjectService;
 import com.eomcs.util.Prompt;
 
 public class ProjectDetailSearchCommand implements Command {
-  ProjectDao projectDao;
+  ProjectService projectService;
 
-  public ProjectDetailSearchCommand(ProjectDao projectDao) {
-    this.projectDao = projectDao;
+  public ProjectDetailSearchCommand(ProjectService projectService) {
+    this.projectService =projectService;
   }
-
+  
   @Override
   public void execute(Map<String,Object> context) {
     System.out.println("[프로젝트 상세 검색]");
@@ -36,7 +37,7 @@ public class ProjectDetailSearchCommand implements Command {
         keywords.put("member", member);        
       }
 
-      List<Project> list = projectDao.findByDetailKeyword(keywords);
+      List<Project> list = projectService.list(keywords);
       System.out.println("번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원");
 
       for (Project project : list) {

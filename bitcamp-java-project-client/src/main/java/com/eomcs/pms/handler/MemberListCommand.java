@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Map;
 import com.eomcs.pms.dao.MemberDao;
 import com.eomcs.pms.domain.Member;
+import com.eomcs.pms.service.MemberService;
 
 public class MemberListCommand implements Command {
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public MemberListCommand(MemberDao memberDao) {
-    this.memberDao = memberDao;
+  public MemberListCommand(MemberService memberService) {
+    this.memberService = memberService;
   }
 
   @Override
@@ -17,7 +18,7 @@ public class MemberListCommand implements Command {
     System.out.println("[회원 목록]");
 
     try {
-      List<Member> list = memberDao.findAll();
+      List<Member> list = memberService.list(null);
       System.out.println("번호, 이름, 이메일, 전화, 등록일");
       for (Member member : list) {
         System.out.printf("%d, %s, %s, %s, %s\n",

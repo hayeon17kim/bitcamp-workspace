@@ -19,21 +19,21 @@ public class BoardDaoImpl implements com.eomcs.pms.dao.BoardDao{
 
   @Override
   public int insert(Board board) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.insert("BoardDao.insert", board);
     }
   }
 
   @Override
   public int delete(int no) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.delete("BoardDao.delete", no);
     }
   }
 
   @Override
   public Board findByNo(int no) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       Board board = sqlSession.selectOne("BoardDao.findByNo", no);
       sqlSession.update("BoardDao.updateViewCount", no);
       return board;
@@ -49,14 +49,14 @@ public class BoardDaoImpl implements com.eomcs.pms.dao.BoardDao{
 
   @Override
   public int update(Board board) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.update("BoardDao.update", board);
     }
   }
 
   @Override
   public List<Board> findByKeyword(String keyword) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.selectList("BoardDao.findAll", keyword);
     }
   }

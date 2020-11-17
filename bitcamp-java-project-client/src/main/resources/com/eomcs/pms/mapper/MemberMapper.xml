@@ -14,13 +14,17 @@
     <result column="cdt"      property="registeredDate"/>
   </resultMap>
 
-  <select id="findAll" resultMap="MemberMap">
+  <select id="findAll" parameterType="string" resultMap="MemberMap">
     select 
       no, 
       name, 
       email, 
       tel, 
       cdt
+  <if test="keyword != null">
+      where 
+      name = #{keyword}
+  </if>
     from 
       pms_member
     order by 
