@@ -1,54 +1,53 @@
 package com.eomcs.pms.handler;
 
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.Map;
 import com.eomcs.pms.domain.Board;
+import com.eomcs.pms.service.BoardService;
 import com.eomcs.util.Prompt;
-
+@CommandAnno("/board/update")
 public class BoardUpdateCommand implements Command {
 
-  List<Board> boardList;
+  BoardService boardService;
 
-  public BoardUpdateCommand(List<Board> list) {
-    this.boardList = list;
+  public BoardUpdateCommand(BoardService boardService) {
+    this.boardService = boardService;
   }
 
   @Override
-  public void execute() {
-    System.out.println("[게시물 변경]");
-    int no = Prompt.inputInt("번호? ");
-    Board board = findByNo(no);
+  public void execute(Request request) {
+    PrintWriter out = request.getWriter();
+    BufferedReader in = request.getReader();
+    try {
+      out.println("[게시물 변경]");
+      int no = Prompt.inputInt("번호? ", out, in);
+      Board board = boardService.get(no);
 
-    if (board == null) {
-      System.out.println("해당 번호의 게시글이 없습니다.");
-      return;
-    }
-
-    String title = Prompt.inputString(
-        String.format("제목(%s)? ", board.getTitle()));
-    String content = Prompt.inputString(
-        String.format("내용(%s)? ", board.getContent()));
-    String writer = Prompt.inputString(
-        String.format("작성자(%s)? ", board.getWriter()));
-
-    String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
-    if (!response.equalsIgnoreCase("y")) {
-      System.out.println("게시글 변경을 취소하였습니다.");
-      return;
-    }
-
-    board.setTitle(title);
-    board.setContent(content);
-    board.setWriter(writer);
-    System.out.println("게시글을 변경하였습니다.");
-  }
-
-  private Board findByNo(int no) {
-    for (int i = 0; i < boardList.size(); i++) {
-      Board board = boardList.get(i);
-      if (board.getNo() == no) {
-        return board;
+      if (board == null) {
+        out.println("해당 번호의 게시글이 없습니다.");
+        return;
       }
+
+      board.setTitle(Prompt.inputString(String.format(
+          "제목(%s)? ", board.getTitle()), out, in));
+      board.setContent(Prompt.inputString(String.format(
+          "내용(%s)? ", board.getContent()), out, in));
+
+      String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ", out, in);
+      if (!response.equalsIgnoreCase("y")) {
+        out.println("게시글 변경을 취소하였습니다.");
+        return;
+      }
+      int count = boardService.update(board);
+      if (count == 0) {
+        out.println("게시글이 없습니다.");
+        return;
+      } 
+      out.println("게시글을 변경하였습니다.");
+
+    } catch (Exception e) {
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
     }
-    return null;
   }
 }

@@ -1,52 +1,56 @@
 package com.eomcs.pms.handler;
 
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.Map;
 import com.eomcs.pms.domain.Task;
+import com.eomcs.pms.service.TaskService;
 import com.eomcs.util.Prompt;
 
+@CommandAnno("/task/detail")
 public class TaskDetailCommand implements Command {
 
-  List<Task> taskList;
+  TaskService taskService;
 
-  public TaskDetailCommand(List<Task> list) {
-    this.taskList = list;
+  public TaskDetailCommand(TaskService taskService) {
+    this.taskService = taskService;
   }
 
   @Override
-  public void execute() {
-    System.out.println("[작업 상세보기]");
-    int no = Prompt.inputInt("번호? ");
-    Task task = findByNo(no);
+  public void execute(Request request) {
+    PrintWriter out = request.getWriter();
+    BufferedReader in = request.getReader();
+    out.println("[작업 상세보기]");
 
-    if (task == null) {
-      System.out.println("해당 번호의 작업이 없습니다.");
-      return;
-    }
+    try {
+      int no = Prompt.inputInt("번호? ", out, in);
 
-    System.out.printf("내용: %s\n", task.getContent());
-    System.out.printf("마감일: %s\n", task.getDeadline());
-    String stateLabel = null;
-    switch (task.getStatus()) {
-      case 1:
-        stateLabel = "진행중";
-        break;
-      case 2:
-        stateLabel = "완료";
-        break;
-      default:
-        stateLabel = "신규";
-    }
-    System.out.printf("상태: %s\n", stateLabel);
-    System.out.printf("담당자: %s\n", task.getOwner());
-  }
-
-  private Task findByNo(int no) {
-    for (int i = 0; i < taskList.size(); i++) {
-      Task task = taskList.get(i);
-      if (task.getNo() == no) {
-        return task;
+      Task task = taskService.get(no);
+      if (task == null) {
+        out.println("해당 번호의 작업이 존재하지 않습니다.");
+        return;
       }
+
+      out.printf("내용: %s\n", task.getContent());
+      out.printf("마감일: %s\n", task.getDeadline());
+
+      String stateLabel = null;
+      switch (task.getStatus()) {
+        case 1:
+          stateLabel = "진행중";
+          break;
+        case 2:
+          stateLabel = "완료";
+          break;
+        default:
+          stateLabel = "신규";
+      }
+      out.printf("상태: %s\n", stateLabel);
+      out.printf("담당자: %s\n", task.getOwner().getName());
+
+    } catch (Exception e) {
+      out.println("작업 조회 중 오류 발생!");
+      e.printStackTrace();
     }
-    return null;
   }
 }
