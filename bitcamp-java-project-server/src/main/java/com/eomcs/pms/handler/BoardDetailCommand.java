@@ -1,44 +1,45 @@
 package com.eomcs.pms.handler;
 
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import com.eomcs.pms.domain.Board;
+import com.eomcs.pms.service.BoardService;
 import com.eomcs.util.Prompt;
 
+@CommandAnno("/board/detail")
 public class BoardDetailCommand implements Command {
 
-  List<Board> boardList;
+  BoardService boardService;
 
-  public BoardDetailCommand(List<Board> list) {
-    this.boardList = list;
+  public BoardDetailCommand(BoardService boardService) {
+    this.boardService = boardService;
   }
 
   @Override
-  public void execute() {
-    System.out.println("[게시물 상세보기]");
-    int no = Prompt.inputInt("번호? ");
-    Board board = findByNo(no);
+  public void execute(Request request) {
+    PrintWriter out = request.getWriter();
+    BufferedReader in = request.getReader();
 
-    if (board == null) {
-      System.out.println("해당 번호의 게시글이 없습니다.");
-      return;
-    }
+    try {
+      out.println("[게시물 상세보기]");
+      int no = Prompt.inputInt("번호? ", out, in);
 
-    board.setViewCount(board.getViewCount() + 1);
+      Board board = boardService.get(no);
 
-    System.out.printf("제목: %s\n", board.getTitle());
-    System.out.printf("내용: %s\n", board.getContent());
-    System.out.printf("작성자: %s\n", board.getWriter());
-    System.out.printf("등록일: %s\n", board.getRegisteredDate());
-    System.out.printf("조회수: %d\n", board.getViewCount());
-  }
-
-  private Board findByNo(int no) {
-    for (int i = 0; i < boardList.size(); i++) {
-      Board board = boardList.get(i);
-      if (board.getNo() == no) {
-        return board;
+      if (board == null) {
+        out.println("해당 번호의 게시글이 없습니다.");
+        return;
       }
+
+      out.printf("제목: %s\n", board.getTitle());
+      out.printf("내용: %s\n", board.getContent());
+      out.printf("작성자: %s\n", board.getWriter().getName());
+      out.printf("등록일: %s\n", board.getRegisteredDate());
+      out.printf("조회수: %d\n", board.getViewCount());
+
+    } catch (Exception e) {
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
+      e.printStackTrace();
     }
-    return null;
   }
 }

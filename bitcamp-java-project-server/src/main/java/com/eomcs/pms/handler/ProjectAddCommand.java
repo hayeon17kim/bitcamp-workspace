@@ -1,61 +1,70 @@
 package com.eomcs.pms.handler;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
+import com.eomcs.pms.service.MemberService;
+import com.eomcs.pms.service.ProjectService;
 import com.eomcs.util.Prompt;
 
+@CommandAnno("/project/add")
 public class ProjectAddCommand implements Command {
 
-  List<Project> projectList;
-  MemberListCommand memberListCommand;
+  ProjectService projectService;
+  MemberService memberService;
 
-  public ProjectAddCommand(List<Project> list, MemberListCommand memberListCommand) {
-    this.projectList = list;
-    this.memberListCommand = memberListCommand;
+  public ProjectAddCommand(
+      ProjectService projectService,
+      MemberService memberService) {
+    this.projectService = projectService;
+    this.memberService = memberService;
   }
 
   @Override
-  public void execute() {
-    System.out.println("[프로젝트 등록]");
+  public void execute(Request request) {
+    PrintWriter out = request.getWriter();
+    BufferedReader in = request.getReader();
+    Map<String,Object> session = request.getSession();
 
-    Project project = new Project();
-    project.setNo(Prompt.inputInt("번호? "));
-    project.setTitle(Prompt.inputString("프로젝트명? "));
-    project.setContent(Prompt.inputString("내용? "));
-    project.setStartDate(Prompt.inputDate("시작일? "));
-    project.setEndDate(Prompt.inputDate("종료일? "));
+    try {
+      out.println("[프로젝트 등록]");
 
-    while (true) {
-      String name = Prompt.inputString("만든이?(취소: 빈 문자열) ");
+      Project project = new Project();
+      project.setTitle(Prompt.inputString("프로젝트명? ", out, in));
+      project.setContent(Prompt.inputString("내용? ", out, in));
+      project.setStartDate(Prompt.inputDate("시작일? ", out, in));
+      project.setEndDate(Prompt.inputDate("종료일? ", out, in));
 
-      if (name.length() == 0) {
-        System.out.println("프로젝트 등록을 취소합니다.");
-        return;
-      } else if (memberListCommand.findByName(name) != null) {
-        project.setOwner(name);
-        break;
-      }
+      Member loginUser = (Member) session.get("loginUser");
+      project.setOwner(loginUser);
 
-      System.out.println("등록된 회원이 아닙니다.");
-    }
-
-    StringBuilder members = new StringBuilder();
-    while (true) {
-      String name = Prompt.inputString("팀원?(완료: 빈 문자열) ");
-
-      if (name.length() == 0) {
-        break;
-      } else if (memberListCommand.findByName(name) != null) {
-        if (members.length() > 0) {
-          members.append(",");
+      // 프로젝트에 참여할 회원 정보를 담는다.
+      List<Member> members = new ArrayList<>();
+      while (true) {
+        String name = Prompt.inputString("팀원?(완료: 빈 문자열) ", out, in);
+        if (name.length() == 0) {
+          break;
+        } else {
+          List<Member> list = memberService.list(name);
+          if (list.size() == 0) {
+            out.println("등록된 회원이 아닙니다.");
+            continue;
+          }
+          members.add(list.get(0));
         }
-        members.append(name);
-      } else {
-        System.out.println("등록된 회원이 아닙니다.");
       }
-    }
-    project.setMembers(members.toString());
+      project.setMembers(members);
 
-    projectList.add(project);
+      projectService.add(project);
+      out.println("프로젝트가 등록되었습니다!");
+
+    } catch (Exception e) {
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
+      e.printStackTrace();
+    }
   }
 }

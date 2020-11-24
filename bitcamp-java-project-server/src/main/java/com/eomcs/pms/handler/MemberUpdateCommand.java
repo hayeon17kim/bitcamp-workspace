@@ -1,60 +1,60 @@
 package com.eomcs.pms.handler;
 
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import com.eomcs.pms.domain.Member;
+import com.eomcs.pms.service.MemberService;
 import com.eomcs.util.Prompt;
 
+@CommandAnno("/member/update")
 public class MemberUpdateCommand implements Command {
 
-  List<Member> memberList;
+  MemberService memberService;
 
-  public MemberUpdateCommand(List<Member> list) {
-    this.memberList = list;
+  public MemberUpdateCommand(MemberService memberService) {
+    this.memberService = memberService;
   }
 
   @Override
-  public void execute() {
-    System.out.println("[회원 변경]");
-    int no = Prompt.inputInt("번호? ");
-    Member member = findByNo(no);
+  public void execute(Request request) {
+    PrintWriter out = request.getWriter();
+    BufferedReader in = request.getReader();
 
-    if (member == null) {
-      System.out.println("해당 번호의 회원이 없습니다.");
-      return;
-    }
+    try {
+      out.println("[회원 변경]");
+      int no = Prompt.inputInt("번호? ", out, in);
+      Member member = memberService.get(no);
 
-    String name = Prompt.inputString(
-        String.format("이름(%s)? ", member.getName()));
-    String email = Prompt.inputString(
-        String.format("이메일(%s)? ", member.getEmail()));
-    String password = Prompt.inputString("암호? ");
-    String photo = Prompt.inputString(
-        String.format("사진(%s)? ", member.getPhoto()));
-    String tel = Prompt.inputString(
-        String.format("전화(%s)? ", member.getTel()));
-
-    String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
-    if (!response.equalsIgnoreCase("y")) {
-      System.out.println("회원 변경을 취소하였습니다.");
-      return;
-    }
-
-    member.setName(name);
-    member.setEmail(email);
-    member.setPassword(password);
-    member.setPhoto(photo);
-    member.setTel(tel);
-
-    System.out.println("회원을 변경하였습니다.");
-  }
-
-  private Member findByNo(int no) {
-    for (int i = 0; i < memberList.size(); i++) {
-      Member member = memberList.get(i);
-      if (member.getNo() == no) {
-        return member;
+      if (member == null) {
+        out.println("해당 번호의 회원이 없습니다.");
+        return;
       }
+
+      member.setName(Prompt.inputString(
+          String.format("이름(%s)? ", member.getName()), out, in));
+      member.setEmail(Prompt.inputString(
+          String.format("이메일(%s)? ", member.getEmail()), out, in));
+      member.setPassword(Prompt.inputString("암호? ", out, in));
+      member.setPhoto(Prompt.inputString(
+          String.format("사진(%s)? ", member.getPhoto()), out, in));
+      member.setTel(Prompt.inputString(
+          String.format("전화(%s)? ", member.getTel()), out, in));
+
+      String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ", out, in);
+      if (!response.equalsIgnoreCase("y")) {
+        out.println("회원 변경을 취소하였습니다.");
+        return;
+      }
+
+      if (memberService.update(member) == 0) {
+        out.println("해당 번호의 회원이 존재하지 않습니다.");
+      } else {
+        out.println("회원을 변경하였습니다.");
+      }
+
+    } catch (Exception e) {
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
+      e.printStackTrace();
     }
-    return null;
   }
 }
