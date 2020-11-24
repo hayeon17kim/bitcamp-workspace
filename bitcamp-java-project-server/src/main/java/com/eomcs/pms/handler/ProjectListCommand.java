@@ -1,7 +1,14 @@
 package com.eomcs.pms.handler;
 
+<<<<<<< HEAD
 import java.io.PrintWriter;
 import java.util.List;
+=======
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.service.ProjectService;
@@ -19,8 +26,11 @@ public class ProjectListCommand implements Command {
   public void execute(Request request) {
     PrintWriter out = request.getWriter();
 
+<<<<<<< HEAD
     out.println("[프로젝트 목록]");
 
+=======
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
     try {
       List<Project> list = projectService.list();
       out.println("번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원");

@@ -1,5 +1,9 @@
 package com.eomcs.pms.listener;
 
+<<<<<<< HEAD
+=======
+import java.util.Map;
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -25,6 +29,10 @@ import com.eomcs.pms.service.TaskService;
 import com.eomcs.util.SqlSessionFactoryProxy;
 
 @WebListener
+<<<<<<< HEAD
+=======
+// 게시물, 회원, 프로젝트, 작업 데이터를 파일에서 로딩하고 파일로 저장하는 일을 한다.
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 public class DataHandlerListener implements ServletContextListener {
 
   @Override
@@ -47,6 +55,7 @@ public class DataHandlerListener implements ServletContextListener {
       MemberService memberService = new DefaultMemberService(memberDao);
       ProjectService projectService = new DefaultProjectService(taskDao, projectDao, sqlSessionFactory);
       TaskService taskService = new DefaultTaskService(taskDao);
+<<<<<<< HEAD
 
       // 다른 객체가 사용할 수 있도록 context 맵 보관소에 저장해둔다.
       ServletContext ctx = sce.getServletContext();
@@ -54,6 +63,15 @@ public class DataHandlerListener implements ServletContextListener {
       ctx.setAttribute("boardService", boardService);
       ctx.setAttribute("memberService", memberService);
       ctx.setAttribute("projectService", projectService);
+=======
+      
+      ServletContext ctx = sce.getServletContext();
+
+      // 다른 객체가 사용할 수 있도록 context 맵 보관소에 저장해둔다.
+      ctx.setAttribute("boardService", boardService);
+      ctx.setAttribute("projectService", projectService);
+      ctx.setAttribute("memberService", memberService);
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
       ctx.setAttribute("taskService", taskService);
 
     } catch (Exception e) {
@@ -62,4 +80,12 @@ public class DataHandlerListener implements ServletContextListener {
     }
   }
 
+<<<<<<< HEAD
+=======
+@Override
+public void contextDestroyed(ServletContextEvent sce) {
+  // TODO Auto-generated method stub
+  ServletContextListener.super.contextDestroyed(sce);
+}
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 }

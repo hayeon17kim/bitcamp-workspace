@@ -1,5 +1,9 @@
 package com.eomcs.pms.filter;
 
+<<<<<<< HEAD
+=======
+import java.io.BufferedReader;
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 import java.io.PrintWriter;
 import java.util.Map;
 import com.eomcs.pms.handler.Command;
@@ -20,6 +24,7 @@ public class DefaultCommandFilter implements CommandFilter {
 
     // 사용자가 입력한 명령에 따라 커맨드 객체를 실행한다.
     Command command = commandMap.get(request.getCommandPath());
+<<<<<<< HEAD
 
     PrintWriter out = request.getWriter();
 
@@ -28,6 +33,15 @@ public class DefaultCommandFilter implements CommandFilter {
         command.execute(request);
 
       } catch (Exception e) {
+=======
+    PrintWriter out =  request.getWriter();
+    
+    if (command != null) {
+      try {
+        command.execute(request);
+      } catch (Exception e) {
+        // 오류가 발생하면 그 정보를 갖고 있는 객체의 클래스 이름을 출력한다.
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
         out.println("--------------------------------------------------------------");
         out.printf("명령어 실행 중 오류 발생: %s\n", e);
         out.println("--------------------------------------------------------------");

@@ -3,6 +3,10 @@ package com.eomcs.pms.handler;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.List;
+<<<<<<< HEAD
+=======
+import java.util.Map;
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.service.ProjectService;
@@ -21,8 +25,12 @@ public class ProjectSearchCommand implements Command {
   public void execute(Request request) {
     PrintWriter out = request.getWriter();
     BufferedReader in = request.getReader();
+<<<<<<< HEAD
 
     System.out.println("[프로젝트 검색]");
+=======
+    out.println("[프로젝트 검색]");
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 
     try {
       String keyword = Prompt.inputString("검색어? ", out, in);
@@ -48,7 +56,11 @@ public class ProjectSearchCommand implements Command {
             members.toString());
       }
     } catch (Exception e) {
+<<<<<<< HEAD
       out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
+=======
+      out.println("프로젝트 목록 조회 중 오류 발생!");
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
       e.printStackTrace();
     }
   }

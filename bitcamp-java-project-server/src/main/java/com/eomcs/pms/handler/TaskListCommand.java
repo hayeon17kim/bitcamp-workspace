@@ -1,10 +1,18 @@
 package com.eomcs.pms.handler;
 
+<<<<<<< HEAD
+=======
+import java.io.BufferedReader;
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 import com.eomcs.pms.domain.Task;
 import com.eomcs.pms.service.TaskService;
+<<<<<<< HEAD
 
+=======
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 @CommandAnno("/task/list")
 public class TaskListCommand implements Command {
 
@@ -13,11 +21,13 @@ public class TaskListCommand implements Command {
   public TaskListCommand(TaskService taskService) {
     this.taskService = taskService;
   }
-
   @Override
   public void execute(Request request) {
     PrintWriter out = request.getWriter();
+<<<<<<< HEAD
 
+=======
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
     out.println("[작업 목록]");
 
     try {
@@ -44,7 +54,11 @@ public class TaskListCommand implements Command {
             stateLabel);
       }
     } catch (Exception e) {
+<<<<<<< HEAD
       out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
+=======
+      out.println("작업 목록 조회 중 오류 발생!");
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
       e.printStackTrace();
     }
   }

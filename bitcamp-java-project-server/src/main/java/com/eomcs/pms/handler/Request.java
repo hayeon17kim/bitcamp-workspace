@@ -11,6 +11,7 @@ public class Request {
   BufferedReader in;
   String sessionId;
 
+<<<<<<< HEAD
   public Request(
       String commandPath,
       Map<String,Object> context,
@@ -18,12 +19,26 @@ public class Request {
       BufferedReader in,
       String sessionId) {
 
+=======
+  public Request(String commandPath, Map<String,Object> context, PrintWriter out, BufferedReader in, String sessionId) {
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
     this.commandPath = commandPath;
     this.context = context;
     this.out = out;
     this.in = in;
     this.sessionId = sessionId;
   }
+<<<<<<< HEAD
+=======
+  
+  public PrintWriter getWriter() {
+    return out;
+  }
+  
+  public BufferedReader getReader() {
+    return in;
+  }
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 
   public String getCommandPath() {
     return commandPath;
@@ -32,6 +47,7 @@ public class Request {
   public Map<String, Object> getContext() {
     return context;
   }
+<<<<<<< HEAD
 
   public PrintWriter getWriter() {
     return out;
@@ -49,6 +65,18 @@ public class Request {
   public void invalidateSession() {
     context.remove(sessionId);
   }
+=======
+  
+  @SuppressWarnings("unchecked")
+  public Map<String, Object> getSession() {
+    return (Map<String, Object>) context.get(sessionId);
+  }
+  
+  public void invalidateSession() {
+    context.remove(sessionId);
+  }
+
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 }
 
 

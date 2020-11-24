@@ -2,16 +2,25 @@ package com.eomcs.pms.handler;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.util.Map;
 import com.eomcs.util.Prompt;
+<<<<<<< HEAD
 
 @CommandAnno("/calc")
+=======
+@CommandAnno("/calc")
+// Command 규칙에 따라 클래스를 정의한다.
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
 public class CalculatorCommand implements Command {
 
   @Override
   public void execute(Request request) {
     PrintWriter out = request.getWriter();
     BufferedReader in = request.getReader();
+<<<<<<< HEAD
 
+=======
+>>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
     try {
       out.println("[계산기]");
 
