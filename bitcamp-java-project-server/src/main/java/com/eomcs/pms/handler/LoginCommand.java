@@ -20,12 +20,8 @@ public class LoginCommand implements Command {
   public void execute(Request request) {
     PrintWriter out = request.getWriter();
     BufferedReader in = request.getReader();
-<<<<<<< HEAD
     Map<String,Object> session = request.getSession();
 
-=======
-    Map<String, Object> session = request.getSession();
->>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
     out.println("[로그인]");
 
     if (session.get("loginUser") != null) {
@@ -41,10 +37,7 @@ public class LoginCommand implements Command {
       if (member == null) {
         out.println("사용자 정보가 맞지 않습니다.");
       } else {
-<<<<<<< HEAD
         // 로그인이 성공했으면 회원 정보를
-=======
->>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
         // 각 클라이언트의 전용 보관소인 session에 저장한다.
         session.put("loginUser", member);
         out.printf("%s 님 반갑습니다.\n", member.getName());

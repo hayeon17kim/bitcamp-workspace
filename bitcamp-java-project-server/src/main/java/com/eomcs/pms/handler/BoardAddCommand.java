@@ -22,29 +22,18 @@ public class BoardAddCommand implements Command {
   public void execute(Request request) {
     PrintWriter out = request.getWriter();
     BufferedReader in = request.getReader();
-<<<<<<< HEAD
     Map<String,Object> session = request.getSession();
 
-=======
-    Map<String, Object> session = request.getSession();
-    
-    // 예외가 발생했을 때 출력하기 위해 in out은 try catch 바깥으로 꺼낸다.
->>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
     try {
       out.println("[게시물 등록]");
 
       Board board = new Board();
       board.setTitle(Prompt.inputString("제목? ", out, in));
       board.setContent(Prompt.inputString("내용? ", out, in));
-<<<<<<< HEAD
 
       Member loginUser = (Member) session.get("loginUser");
       board.setWriter(loginUser);
 
-=======
-      Member loginUser = (Member) session.get("loginUser");
-      board.setWriter(loginUser);
->>>>>>> b2246385c7ae9f527ca04b18fce4ea5b337d8508
       boardService.add(board);
 
       out.println("게시글을 등록하였습니다.");

@@ -18,7 +18,7 @@ public class BoardListCommand extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
     ServletContext ctx = request.getServletContext();
@@ -30,32 +30,43 @@ public class BoardListCommand extends HttpServlet {
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");
+    out.println("<head><title>게시글목록</title></head>");
+    out.println("<body>");
     try {
-      out.println("<head><title>게시글목록</title></head>");
-      out.println("<body><h1>게시글목록</h1></body>");
+      out.println("<h1>게시물 목록</h1>");
 
       List<Board> list = boardService.list();
+      out.println("<table border='1'>");
+      out.println("<tr>" // table row
+          + "<th>번호</th>" // table header
+          + "<th>제목</th>"
+          + "<th>작성자</th>"
+          + "<th>등록일</th>"
+          + "<th>조회수</th>"
+          + "</tr>");
 
-      out.println("<body>");
-      
-      out.println("<table><tr>");
-      out.println("<th>번호</th><th>제목</th><th>작성자</th><th>등록일</th><th>조회수</th>");
-      out.println("</tr>");
       for (Board board : list) {
-        out.printf("<td>%d</td><td>%s</td><td>%s</td><td>%s</td><td>%d</td>\n",
+        out.printf("<tr>"
+            + "<td>%d</td>"
+            + "<td>%s</td>"
+            + "<td>%s</td>"
+            + "<td>%s</td>"
+            + "<td>%d</td>"
+            + "</tr>\n",
             board.getNo(),
             board.getTitle(),
             board.getWriter().getName(),
             board.getRegisteredDate(),
             board.getViewCount());
-        out.println("</tr>");
       }
-      out.println("<table>");
-      
+      out.println("</table>");
+
     } catch (Exception e) {
       out.printf("<p>작업 처리 중 오류 발생! - %s</p>\n", e.getMessage());
+
       StringWriter errOut = new StringWriter();
       e.printStackTrace(new PrintWriter(errOut));
+
       out.printf("<pre>%s</pre>\n", errOut.toString());
     }
     out.println("</body>");
