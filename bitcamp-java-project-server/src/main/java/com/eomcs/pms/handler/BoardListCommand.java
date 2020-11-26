@@ -37,14 +37,15 @@ public class BoardListCommand extends HttpServlet {
 
       List<Board> list = boardService.list();
       out.println("<table border='1'>");
-      out.println("<tr>" // table row
+      out.println("<thead><tr>" // table row
           + "<th>번호</th>" // table header
           + "<th>제목</th>"
           + "<th>작성자</th>"
           + "<th>등록일</th>"
           + "<th>조회수</th>"
-          + "</tr>");
+          + "</tr></thead>");
 
+      out.println("<tbody>");
       for (Board board : list) {
         out.printf("<tr>"
             + "<td>%d</td>"
@@ -59,6 +60,7 @@ public class BoardListCommand extends HttpServlet {
             board.getRegisteredDate(),
             board.getViewCount());
       }
+      out.println("</tbody>");
       out.println("</table>");
 
     } catch (Exception e) {
