@@ -29,6 +29,13 @@ public class ProjectDaoImpl implements com.eomcs.pms.dao.ProjectDao {
   }
 
   @Override
+  public int inactive(int no) throws Exception {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.delete("ProjectDao.inactive", no);
+    }
+  }
+
+  @Override
   public Project findByNo(int no) throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.selectOne("ProjectDao.findByNo", no);
@@ -67,6 +74,20 @@ public class ProjectDaoImpl implements com.eomcs.pms.dao.ProjectDao {
   public int insertMembers(Project project) throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.insert("ProjectDao.insertMembers", project);
+    }
+  }
+
+  @Override
+  public int updateInactiveMembers(Project project) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.update("ProjectDao.updateInactiveMembers", project);
+    }
+  }
+
+  @Override
+  public int updateActiveMembers(Project project) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.update("ProjectDao.updateActiveMembers", project);
     }
   }
 }
