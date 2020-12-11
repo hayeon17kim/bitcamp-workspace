@@ -40,11 +40,11 @@ local 방식?
        그래야 이 HTML을 제어하기 위해 추가한 코드가
        외부 파일에 의해 덮어지는 현상을 막을 수 있다.
    -->
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+  <link href="<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
         crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="sweetalert.css">
+  <link rel="stylesheet" type="text/css" href="../node_modules/sweetalert2/dist/sweetalert2.css">
   <link rel="stylesheet" type="text/css" href="test11_1.css">
 </head>
 <body>
@@ -126,20 +126,21 @@ local 방식?
 <img src="http://data.siwonschool.com/banner/img/www/2017/04/04/bimg_src_1491271205.jpg">
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" 
         crossorigin="anonymous"></script>
-<script src="sweetalert.min.js"></script>
+<script src="../node_modules/sweetalert2/dist/sweetalert2.js"></script>
 <script src="test11_1.js"></script>
 <script>
   var onlineBtn = document.getElementById("onlineBtn");
   onlineBtn.addEventListener('click', function() {
-    swal({
-      title: "정보!",
-      text: "커뮤니티 메뉴를 준비중입니다.",
-      type: "info"
-    });
+    alert("웹 브라우저 기본 경고창!")
+    
+    Swal.fire(
+  '새콤 달콤 경고창?',
+  '사용방법을 익힙시다',
+  'success'
+)
   });
 </script>
 </body>

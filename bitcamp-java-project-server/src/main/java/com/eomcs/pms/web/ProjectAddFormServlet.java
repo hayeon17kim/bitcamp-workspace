@@ -1,37 +1,25 @@
 package com.eomcs.pms.web;
 
-import java.io.IOException;
 import java.util.List;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.service.MemberService;
 
-@WebServlet("/project/form")
-public class ProjectAddFormServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
+@Controller
+public class ProjectAddFormServlet {
+  MemberService memberService;
+  public ProjectAddFormServlet(MemberService memberService) {
+    this.memberService = memberService;
+  }
 
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-
-    ServletContext ctx = request.getServletContext();
-    MemberService memberService =
-        (MemberService) ctx.getAttribute("memberService");
-
+  @RequestMapping("/project/form")
+  public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     response.setContentType("text/html;charset=UTF-8");
-    try {
-      List<Member> members = memberService.list();
-      request.setAttribute("members", members);
-      request.getRequestDispatcher("/project/form.jsp").include(request, response);
-
-    } catch (Exception e) {
-      request.setAttribute("exception", e);
-      request.getRequestDispatcher("/error.jsp").forward(request, response);
-    }
+    List<Member> members = memberService.list();
+    request.setAttribute("members", members);
+    return "/project/form.jsp";
   }
 }

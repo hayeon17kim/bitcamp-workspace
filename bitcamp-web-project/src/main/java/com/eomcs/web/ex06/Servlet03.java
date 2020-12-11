@@ -9,10 +9,11 @@ import javax.servlet.http.HttpServlet;
 
 // 서블릿이 사용할 값을 DD 설정으로 지정할 수 있다.
 //
+
 /*
 @WebServlet(//
     value = "/ex06/s3", //
-    loadOnStartup = 1, //
+    //loadOnStartup = 1, //
     initParams = {//
         @WebInitParam(name = "jdbc.driver", value = "org.mariadb.jdbc.Driver"), //
         @WebInitParam(name = "jdbc.url", value = "jdbc:mariadb://localhost/studydb"), //
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServlet;
         @WebInitParam(name = "jdbc.password", value = "1111")})
 @SuppressWarnings("serial")
 */
+
 public class Servlet03 extends HttpServlet {
 
   // @Override

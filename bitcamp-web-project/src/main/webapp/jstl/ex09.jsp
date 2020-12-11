@@ -19,7 +19,6 @@
 <pre>
 https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%ED%99%8D%EA%B8%B8%EB%8F%99
 </pre>
-
 <c:url value="https://search.naver.com/search.naver" var="naverUrl">
     <c:param name="where" value="nexearch"/>
     <c:param name="sm" value="top_hty"/>
@@ -27,7 +26,6 @@ https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&qu
     <c:param name="ie" value="utf8"/>
     <c:param name="query" value="홍길동"/>
 </c:url>
-
 <pre>${naverUrl}</pre>
 
 </body>

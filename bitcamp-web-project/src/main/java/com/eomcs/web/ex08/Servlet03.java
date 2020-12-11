@@ -49,9 +49,9 @@ public class Servlet03 extends HttpServlet {
     // 왜? 리다이렉트 명령을 응답헤더로 보내기 때문이다.
     // 이미 클라이언트로 출력을 완료했는데 어떻게 응답헤더를 보내는가?
     // 다음 반복문 주석을 풀라!
-    // for (int i = 0; i < 4000; i++) {
+    for (int i = 0; i < 4000; i++) {
     out.println("안녕하세요! - /ex08/s3");
-    // }
+    }
     out.println("</body></html>");
 
     // 클라이언트에게 URL을 알려줄 때 상대 경로를 지정할 수 있다.

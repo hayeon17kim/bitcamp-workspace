@@ -6,10 +6,10 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import com.eomcs.pms.domain.Member;
-import com.eomcs.pms.service.MemberService;
 
 @WebListener
 public class AutoLoginListener implements ServletRequestListener {
+  @SuppressWarnings("unchecked")
   @Override
   public void requestInitialized(ServletRequestEvent sre) {
     System.out.println("ㅋㅋ 자동 로그인!");
@@ -17,9 +17,7 @@ public class AutoLoginListener implements ServletRequestListener {
       HttpSession session = ((HttpServletRequest)sre.getServletRequest()).getSession();
 
       if (session.getAttribute("loginUser") == null) {
-        MemberService memberService =
-            (MemberService) session.getServletContext().getAttribute("memberService");
-        Member member = memberService.get("aaa@test.com", "1111");
+        Member member = new Member().setNo(1).setName("hayeon").setEmail("hayeon@test.com");
         session.setAttribute("loginUser", member);
       }
     } catch (Exception e) {

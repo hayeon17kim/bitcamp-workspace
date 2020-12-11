@@ -8,12 +8,17 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
 
-// @WebFilter(
-// value="/ex06/*",
-// initParams={
-// @WebInitParam(name="encoding", value="EUC-KR")
-// })
+/*
+@WebFilter(
+  value="/ex05/*",
+  initParams={
+    @WebInitParam(name="encoding", value="EUC-KR"),
+    @WebInitParam(name="aaa", value="nono")
+})
+*/
 public class Filter02 implements Filter {
 
   FilterConfig filterConfig;
@@ -29,6 +34,7 @@ public class Filter02 implements Filter {
 
     // 필터의 DD 설정으로 지정한 파라미터 값 가져오기
     System.out.printf("ex06.Filter02 : encoding=%s\n", filterConfig.getInitParameter("encoding"));
+    System.out.printf("ex06.Filter02 : aaa=%s\n", filterConfig.getInitParameter("aaa"));
 
     chain.doFilter(request, response);
   }

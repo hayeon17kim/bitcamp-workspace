@@ -15,6 +15,14 @@
 <h1>JSP 액션 태그 - jsp:useBean, jsp:setProperty</h1>
 <%-- bitcamp.vo.Board 객체 생성하기 --%>
 <jsp:useBean id="b1" class="com.eomcs.web.vo.Board" scope="page"/>
+<%--
+위 태그의 자바 코드
+com.eomcs.web.vo.Board b1 = (com.eomcs.web.vo.Board) pageContext.getAttribute("b1");
+if (b1 == null) {
+  b1 = new com.eomcs.web.vo.Board();
+  pageContext.setAttribute("b1", b1);
+}
+ --%>
 
 <%-- scope을 생략하면 기본이 page(PageContext)이다. --%>
 <jsp:useBean id="b2" class="com.eomcs.web.vo.Board"/>
@@ -25,8 +33,8 @@
 <jsp:setProperty name="b3" property="no" value="100"/>
 <jsp:setProperty name="b3" property="contents" value="내용입니다."/>
 <jsp:setProperty name="b3" property="viewCount" value="88"/>
-<%-- 자바 원시 타입과 문자열을 제외한 속성의 값을 지정할 수 없다.
-     따로 처리해야 한다. --%>
+<%-- 단, 속성에 자바 객체의 프로퍼티 타입이 자바 원시 타입과 문자열인 경우 가능하다.
+     다른 타입이라면 속성을 따로 처리해야 한다. --%>
 <%-- 
 <jsp:setProperty name="b3" property="createdDate" value="2019-4-8"/>
 --%>

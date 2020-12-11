@@ -16,6 +16,7 @@
   h1 {
     padding-left: 10px;
   }
+  /*이 조건에 해당하는 h1이 없다.*/
   h1:nth-child(1) { /* 첫 번째 대상을 지정한다 */
     background-color: gray;
   }
@@ -29,10 +30,19 @@
   h1:nth-child(2n + 1) {
     border-right: 10px solid yellow;
   }
+  
+  h1:first-child {
+    text-decoration: underline;
+  }
+  
+  h1:last-child {
+    text-decoration: overline;
+  }
+  /*
+  */
   </style>
 </head>
 <body>
-<p>ok</p>
 <h1>제목1</h1>
 <h1>제목2</h1>
 <h1>제목3</h1>

@@ -22,6 +22,9 @@ public class Servlet01 extends HttpServlet {
     // => http://localhost:8080/java-web/ex07/s1?a=100&b=200&op=+
     // => http://localhost:8080/java-web/ex07/s1?a=100&b=200&op=-
     // => http://localhost:8080/java-web/ex07/s1?a=100&b=200&op=*
+    // => http://localhost:8080/java-web/ex07/s1?a=100&b=200&op=*
+    // => http://localhost:8080/java-web/ex07/s1?a=100&b=200&op=*
+    // => http://localhost:8080/java-web/ex07/s1?a=100&b=200&op=*
     //
     // 주의!
     // => + 연산을 수행하지 못한다.
@@ -57,7 +60,7 @@ public class Servlet01 extends HttpServlet {
       // 이 서블릿이 출력한 내용을 취소할 수 있는 것이다.
       요청배달자.forward(request, response);
 
-      System.out.println("ex07/Servlet01!!!");
+      out.println("ex07/Servlet01!!!");
       // 포워딩 한 서블릿을 실행한 후 리턴된다.
       // 단 리턴된 후에 출력하는 것은 모두 무시된다.
       // 따라서 포워딩 후에 리턴되면 하위의 코드를 실행하지 않고

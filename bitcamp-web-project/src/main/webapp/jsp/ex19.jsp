@@ -13,6 +13,10 @@
 <h1>JSP 액션 태그 - jsp:include</h1>
 
 <jsp:include page="ex19_header.jsp"/>
+<%-- 자바 코드
+RequestDispatcher rd = request.getRequestDispatcher("/ex19_header.jsp");
+rd.include(request, response);
+ --%>
 
 <p>테스트</p>
 

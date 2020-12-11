@@ -1,22 +1,24 @@
 package com.eomcs.pms.web;
 
-import java.io.IOException;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.service.BoardService;
 
-@WebServlet("/board/detail")
-public class BoardDetailServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
+@Controller
+public class BoardDetailServlet {
+  BoardService boardService;
 
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  public BoardDetailServlet(BoardService boardService) {
+    this.boardService = boardService;
+  }
+
+  @RequestMapping("/board/detail")
+  public String execute(HttpServletRequest request, HttpServletResponse response)
+      throws Exception {
 
     ServletContext ctx = request.getServletContext();
     BoardService boardService =
@@ -24,15 +26,15 @@ public class BoardDetailServlet extends HttpServlet {
 
     response.setContentType("text/html;charset=UTF-8");
 
-    try {
-      int no = Integer.parseInt(request.getParameter("no"));
-      Board board = boardService.get(no);
-      request.setAttribute("board", board);
-      request.getRequestDispatcher("/board/detail.jsp").include(request, response);
+    int no = Integer.parseInt(request.getParameter("no"));
+    Board board = boardService.get(no);
 
-    } catch (Exception e) {
-      request.setAttribute("exception", e);
-      request.getRequestDispatcher("/error.jsp").forward(request, response);
+    if (board == null) {
+      throw new Exception("해당 번호의 게시글이 없습니다!");
     }
+
+    request.setAttribute("board", board);
+    return "/board/detail.jsp";
+
   }
 }

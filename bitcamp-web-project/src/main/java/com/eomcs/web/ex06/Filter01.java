@@ -16,6 +16,7 @@ public class Filter01 implements Filter {
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
     this.filterConfig = filterConfig;
+    System.out.println("ex06.Filter01.init()");
   }
 
   @Override
@@ -23,9 +24,14 @@ public class Filter01 implements Filter {
       throws IOException, ServletException {
 
     // 필터의 DD 설정으로 지정한 파라미터 값 가져오기
+    System.out.printf("ex06.Filter01 : aaa=%s\n", filterConfig.getInitParameter("aaa"));
     System.out.printf("ex06.Filter01 : encoding=%s\n", filterConfig.getInitParameter("encoding"));
-
     chain.doFilter(request, response);
+  }
+  
+  @Override
+  public void destroy() {
+    System.out.println("ex06.Filter01.destroy()");
   }
 }
 

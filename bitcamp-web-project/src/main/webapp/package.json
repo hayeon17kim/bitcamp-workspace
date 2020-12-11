@@ -14,11 +14,12 @@
   "dependencies": {
     "alertifyjs": "^1.11.2",
     "blueimp-file-upload": "^10.3.0",
-    "bootstrap": "^4.3.1",
+    "bootstrap": "^5.0.0-beta1",
     "handlebars": "^4.7.6",
     "jquery": "^3.5.1",
     "jquery-ui": "^1.12.1",
     "jquery-ui-dist": "^1.12.1",
-    "popper.js": "^1.16.0"
+    "popper.js": "^1.16.0",
+    "sweetalert2": "^10.12.3"
   }
 }

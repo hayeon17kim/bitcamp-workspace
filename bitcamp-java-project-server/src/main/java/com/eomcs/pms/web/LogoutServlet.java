@@ -1,21 +1,17 @@
 package com.eomcs.pms.web;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.eomcs.pms.domain.Member;
 
-@WebServlet("/auth/logout")
-public class LogoutServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
+@Controller
+public class LogoutServlet {
 
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  @RequestMapping("/auth/logout")
+  public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
     // 클라이언트 전용 보관소(HttpSession)를 준비한다.
     HttpSession session = request.getSession();
@@ -28,7 +24,6 @@ public class LogoutServlet extends HttpServlet {
 
     response.setContentType("text/html;charset=UTF-8");
     request.setAttribute("loginUser", loginUser);
-    request.getRequestDispatcher("/auth/logout.jsp").include(request, response);
-
+    return "/auth/logout.jsp";
   }
 }

@@ -8,8 +8,16 @@
 
 <!-- 컨텍스트(웹 애플리케이션 환경) 초기화 파라미터 
   => Servlet, Listener, Filter 에서 모두 사용할 수 있다.
+
 -->
-<!--  
+<context-param>
+  <param-name>encoding</param-name>
+  <param-value>UTF-8</param-value>
+</context-param>
+<context-param>
+  <param-name>aaa</param-name>
+  <param-value>hohoho</param-value>
+</context-param>
   <context-param>
     <param-name>jdbc2.driver</param-name>
     <param-value>org.mariadb.jdbc.Driver</param-value>
@@ -19,14 +27,13 @@
     <param-value>jdbc:mariadb://localhost:3306/studydb</param-value>
   </context-param>
   <context-param>
-    <param-name>jdbc2.u</web-app>sername</param-name>
+    <param-name>jdbc2.username</param-name>
     <param-value>study</param-value>
   </context-param>
   <context-param>
     <param-name>jdbc2.password</param-name>
     <param-value>1111</param-value>
   </context-param>
--->
 
 <!-- 리스너 등록 -->
 <!--  
@@ -36,6 +43,24 @@
 -->
 <!-- 필터 등록 -->
 <!--
+<filter>
+  <filter-name>f1</filter-name>
+  <filter-class>com.eomcs.web.ex06.Filter01</filter-class>
+  <init-param>
+    <param-name>aaa</param-name>
+    <param-value>okok</param-value>
+  </init-param>
+  <init-param>
+    <param-name>encoding</param-name>
+    <param-value>UTF-8</param-value>
+  </init-param>
+</filter>
+
+<filter-mapping>
+  <filter-name>f1</filter-name>
+  <url-pattern>/ex05/*</url-pattern>
+</filter-mapping>
+
   <filter>
     <filter-name>Filter01</filter-name>
     <filter-class>com.eomcs.web.ex02.Filter01</filter-class>
@@ -101,10 +126,10 @@
     <servlet-name>ex06.Servlet02</servlet-name>
     <url-pattern>/ex06/s2</url-pattern>
   </servlet-mapping>
-  
+  -->
   <servlet>
     <servlet-name>ex06.Servlet04</servlet-name>
-    <servlet-class>com.eo</web-app>mcs.web.ex06.Servlet04</servlet-class>
+    <servlet-class>com.eomcs.web.ex06.Servlet04</servlet-class>
     <init-param>
       <param-name>jdbc.driver</param-name>
       <param-value>org.mariadb.jdbc.Driver</param-value>
@@ -120,13 +145,14 @@
     <init-param>
       <param-name>jdbc.password</param-name>
       <param-value>1111</param-value>
-    </init-par</web-app>am>
+    </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
- --> 
-  <!-- 세션의 타임아웃 설정하기 
-       => 단위는 분(minute)이다. -->
   <!--  
+  
+   세션의 타임아웃 설정하기 
+       => 단위는 분(minute)이다. -->
+  <!---
   <session-config>
     <session-timeout>1</session-timeout> 
   </session-config>
